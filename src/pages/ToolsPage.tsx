@@ -2,6 +2,7 @@ import React from 'react';
 import { ResistorCalculator } from '../components/ResistorCalculator';
 import { CapacitorCalculator } from '../components/CapacitorCalculator';
 import { SerialMonitor } from '../components/SerialMonitor';
+import { ToneGenerator } from '../components/ToneGenerator';
 import { ExternalLink, Cpu, Zap } from 'lucide-react';
 
 const schematics = [
@@ -46,6 +47,9 @@ export const ToolsPage = () => {
         </div>
         <div className="bg-white p-1 rounded-2xl shadow-sm border border-slate-200">
              <CapacitorCalculator />
+        </div>
+        <div className="col-span-1 xl:col-span-2">
+             <ToneGenerator />
         </div>
       </div>
 

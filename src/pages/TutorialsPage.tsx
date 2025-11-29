@@ -67,6 +67,21 @@ export const TutorialsPage = () => {
             {/* Tutorial Content */}
             <div className="flex-1 bg-white p-8 rounded-2xl shadow-sm border border-slate-100 overflow-y-auto prose max-w-none custom-scrollbar">
               <h1 className="text-3xl font-bold text-primary mb-6 border-b pb-4 border-slate-100">{selectedTutorial.title}</h1>
+              
+              {selectedTutorial.videoUrl && (
+                <div className="mb-8 rounded-xl overflow-hidden shadow-lg aspect-video bg-black">
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src={selectedTutorial.videoUrl} 
+                    title={selectedTutorial.title} 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
+
               {(() => {
                 const html = DOMPurify.sanitize(marked.parse(selectedTutorial.content) as string);
                 return (

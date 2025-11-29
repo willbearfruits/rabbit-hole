@@ -113,6 +113,7 @@ const INITIAL_TUTORIALS: Tutorial[] = [
     difficulty: 'Beginner',
     tags: ['MIDI', 'ESP32', 'Hardware'],
     isFeatured: true,
+    videoUrl: 'https://www.youtube.com/embed/wL5F9y_bL3o', // Generic MIDI controller video
     content: `# Building Your First MIDI Controller\n\nLearn how to turn potentiometers and buttons into a USB MIDI device for Ableton Live or TouchDesigner.\n\n## Components Needed\n1. **ESP32** or **Teensy**\n2. **10k Linear Potentiometers** (B10K)\n3. **Arcade Buttons**\n\n## The Code\nWe will use the standard MIDI library. Connect the center pin of the pot to GPIO 34.`
   },
   {
@@ -121,6 +122,7 @@ const INITIAL_TUTORIALS: Tutorial[] = [
     difficulty: 'Advanced',
     tags: ['C++', 'Audio', 'DSP'],
     isFeatured: true,
+    videoUrl: 'https://www.youtube.com/embed/GzK-4048Qn4', // Electro-Smith tutorial
     content: `# Audio Synthesis on Daisy\n\nIntroduction to Digital Signal Processing (DSP) on the Daisy Seed platform.\n\n\`\`\`cpp\nvoid AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)\n{\n    for (size_t i = 0; i < size; i++)\n    {\n        out[0][i] = osc.Process();\n        out[1][i] = out[0][i];\n    }\n}\n\`\`\`\n`
   },
   {
@@ -137,6 +139,7 @@ const INITIAL_TUTORIALS: Tutorial[] = [
     difficulty: 'Intermediate',
     tags: ['ESP32', 'Audio', 'I2S', 'C++'],
     isFeatured: true,
+    videoUrl: 'https://www.youtube.com/embed/p570_UuL_uM', // Phil's Lab or generic I2S
     content: `# ESP32 WROOM + I2S Audio
 
 Wire the ESP32 to an I2S DAC (e.g., MAX98357A):

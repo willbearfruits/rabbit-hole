@@ -23,6 +23,7 @@ export interface Tutorial {
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   tags: string[];
   isFeatured?: boolean;
+  videoUrl?: string; // YouTube or other embeddable URL
 }
 
 export interface UserSettings {
