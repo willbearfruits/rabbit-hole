@@ -16,6 +16,9 @@ export const SerialMonitor: React.FC = () => {
   // Flasher State
   const [flashProgress, setFlashProgress] = useState(0);
   const [isFlashing, setIsFlashing] = useState(false);
+  const [flashStatus, setFlashStatus] = useState('');
+  const [flashError, setFlashError] = useState('');
+  const [binFile, setBinFile] = useState<File | null>(null);
 
   // Scroll to bottom on new log
   useEffect(() => {
@@ -102,23 +105,63 @@ export const SerialMonitor: React.FC = () => {
   };
 
   const handleFlash = async () => {
-    if (!isConnected) {
-        alert("Please connect to a device first via the Monitor tab.");
-        return;
+    if (!binFile) {
+      setFlashError("Select a .bin file first.");
+      return;
     }
+    if (!('serial' in navigator)) {
+      setFlashError("Web Serial not supported in this browser. Try Chrome/Edge.");
+      return;
+    }
+    setFlashError('');
     setIsFlashing(true);
     setFlashProgress(0);
-    addLog("Starting Firmware Upload simulation...");
-    
-    // Simulate flashing process
-    for (let i = 0; i <= 100; i += 5) {
-        setFlashProgress(i);
-        await new Promise(r => setTimeout(r, 100));
-        // In a real app, we would write chunks to writer
+    setFlashStatus('Requesting device...');
+
+    try {
+      const port = await (navigator as any).serial.requestPort();
+      await port.open({ baudRate });
+      setFlashStatus('Loading esptool-js...');
+      const esptool = await import('esptool-js');
+      const Transport = (esptool as any).Transport || (esptool as any).default?.Transport;
+      const ESPLoader = (esptool as any).ESPLoader || (esptool as any).default?.ESPLoader;
+      if (!Transport || !ESPLoader) {
+        throw new Error('esptool-js transport not available. Use ESP Web Flasher as a fallback.');
+      }
+
+      const transport = new Transport(port);
+      const logger = (msg: string) => addLog(`[flash] ${msg}`);
+      const esploader = new ESPLoader(transport, baudRate, baudRate, logger, undefined, false);
+
+      setFlashStatus('Connecting bootloader...');
+      await esploader.main_fn();
+      setFlashProgress(15);
+
+      const bin = new Uint8Array(await binFile.arrayBuffer());
+      setFlashStatus('Flashing firmware...');
+      await esploader.flashData(
+        [{ data: bin, address: 0x1000 }],
+        'keep',
+        false,
+        false,
+        (written: number, total: number) => {
+          const pct = Math.floor((written / total) * 100);
+          setFlashProgress(pct);
+        }
+      );
+
+      setFlashProgress(100);
+      setFlashStatus('Done. Reset your board.');
+      addLog("Firmware Upload Complete.");
+      await transport.disconnect?.();
+      await port.close?.();
+    } catch (error) {
+      console.error("Flash error", error);
+      setFlashError((error as Error).message || 'Flash failed. Try again or use ESP Web Flasher.');
+      addLog(`Flash error: ${(error as Error).message}`);
+    } finally {
+      setIsFlashing(false);
     }
-    
-    addLog("Firmware Upload Complete.");
-    setIsFlashing(false);
   };
 
   const connectDFU = async () => {
@@ -216,21 +259,40 @@ export const SerialMonitor: React.FC = () => {
       {activeTab === 'flasher' && (
           <div className="flex-1 p-8 flex flex-col items-center justify-center bg-slate-50">
               <Upload className="w-16 h-16 text-slate-300 mb-6" />
-              <h3 className="text-xl font-bold mb-2">Firmware Uploader</h3>
-              <p className="text-slate-600 mb-6 text-center max-w-md">Select a .bin file to flash to the connected ESP32. Ensure you are connected in the Monitor tab first.</p>
+              <h3 className="text-xl font-bold mb-2">Firmware Uploader (ESP32)</h3>
+              <p className="text-slate-600 mb-6 text-center max-w-md">
+                Select a .bin file and flash via WebSerial. Use Chrome/Edge. If flashing fails, try ESP Web Flasher.
+              </p>
               
-              <div className="w-full max-w-md bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                  <input type="file" accept=".bin" className="w-full mb-4 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"/>
+              <div className="w-full max-w-md bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                  <input 
+                    type="file" 
+                    accept=".bin" 
+                    className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                    onChange={(e) => setBinFile(e.target.files?.[0] || null)}
+                  />
+                  {binFile && (
+                    <div className="text-xs text-slate-500">Selected: {binFile.name}</div>
+                  )}
                   
-                  {isFlashing ? (
-                      <div className="w-full bg-slate-200 rounded-full h-2.5 mb-4">
-                        <div className="bg-accent h-2.5 rounded-full transition-all duration-300" style={{ width: `${flashProgress}%` }}></div>
+                  {isFlashing && (
+                      <div className="space-y-2">
+                        <div className="w-full bg-slate-200 rounded-full h-2.5">
+                          <div className="bg-accent h-2.5 rounded-full transition-all duration-200" style={{ width: `${flashProgress}%` }}></div>
+                        </div>
+                        <div className="text-xs text-slate-500">{flashStatus || 'Flashing...'}</div>
                       </div>
-                  ) : null}
+                  )}
+                  {flashError && (
+                    <div className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg p-2">{flashError}</div>
+                  )}
 
-                  <Button onClick={handleFlash} disabled={isFlashing || !isConnected} className="w-full">
+                  <Button onClick={handleFlash} disabled={isFlashing} className="w-full">
                       {isFlashing ? 'Flashing...' : 'Start Flash'}
                   </Button>
+                  <div className="text-xs text-slate-400">
+                    Tip: If WebSerial is blocked, use the official ESP Web Flasher: https://espressif.github.io/esp-web-flasher/ with the same .bin.
+                  </div>
               </div>
           </div>
       )}

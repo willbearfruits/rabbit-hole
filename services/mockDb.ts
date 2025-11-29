@@ -78,6 +78,121 @@ const INITIAL_TUTORIALS: Tutorial[] = [
     tags: ['TouchDesigner', 'Interactive', 'Visuals'],
     isFeatured: false,
     content: `# Connecting Sensors to Visuals\n\nHow to read serial data from an Arduino/ESP32 inside TouchDesigner to control visual parameters in real-time.`
+  },
+  {
+    id: '104',
+    title: 'ESP32 WROOM + I2S Audio: Sine, Sequencer, and Drums',
+    difficulty: 'Intermediate',
+    tags: ['ESP32', 'Audio', 'I2S', 'C++'],
+    isFeatured: true,
+    content: `# ESP32 WROOM + I2S Audio
+
+Wire the ESP32 to an I2S DAC (e.g., MAX98357A):
+- BCLK: GPIO 26 → DAC BCLK
+- LRCK/WS: GPIO 25 → DAC L/RCLK
+- DIN: GPIO 22 → DAC DIN
+- GND → GND, VIN per module (3.3V/5V as allowed)
+
+## Sine Wave (44.1 kHz)
+\`\`\`cpp
+#include <Arduino.h>
+#include "driver/i2s.h"
+
+constexpr int I2S_BCK = 26;
+constexpr int I2S_WS  = 25;
+constexpr int I2S_DIN = 22;
+constexpr float SAMPLE_RATE = 44100.0f;
+
+void setupI2S() {
+  i2s_config_t cfg = {
+    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
+    .sample_rate = (int)SAMPLE_RATE,
+    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
+    .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
+    .communication_format = I2S_COMM_FORMAT_I2S,
+    .intr_alloc_flags = 0,
+    .dma_buf_count = 8,
+    .dma_buf_len = 256,
+    .use_apll = false,
+    .tx_desc_auto_clear = true
+  };
+  i2s_pin_config_t pins = {
+    .bck_io_num = I2S_BCK,
+    .ws_io_num = I2S_WS,
+    .data_out_num = I2S_DIN,
+    .data_in_num = I2S_PIN_NO_CHANGE
+  };
+  i2s_driver_install(I2S_NUM_0, &cfg, 0, nullptr);
+  i2s_set_pin(I2S_NUM_0, &pins);
+  i2s_set_sample_rates(I2S_NUM_0, SAMPLE_RATE);
+}
+
+void writeStereo(int16_t sample) {
+  uint32_t frame = (uint16_t)sample | ((uint32_t)(uint16_t)sample << 16);
+  size_t bytes_written;
+  i2s_write(I2S_NUM_0, &frame, sizeof(frame), &bytes_written, portMAX_DELAY);
+}
+
+void setup() { setupI2S(); }
+
+void loop() {
+  static float phase = 0.0f;
+  constexpr float freq = 440.0f;
+  float inc = 2.0f * PI * freq / SAMPLE_RATE;
+  int16_t s = (int16_t)(sin(phase) * 3000);
+  writeStereo(s);
+  phase += inc;
+  if (phase > 2 * PI) phase -= 2 * PI;
+}
+\`\`\`
+
+## 8-Step Sequencer (frequencies array)
+\`\`\`cpp
+void loop() {
+  static uint8_t step = 0;
+  static float phase = 0.0f;
+  constexpr float freqs[8] = {220, 247, 262, 294, 330, 349, 392, 440};
+  static unsigned long lastStep = 0;
+  const unsigned long stepMs = 200; // ~120 BPM
+
+  if (millis() - lastStep > stepMs) { step = (step + 1) % 8; lastStep = millis(); }
+  float inc = 2.0f * PI * freqs[step] / SAMPLE_RATE;
+  int16_t s = (int16_t)(sin(phase) * 4000);
+  writeStereo(s);
+  phase += inc;
+  if (phase > 2 * PI) phase -= 2 * PI;
+}
+\`\`\`
+
+## Simple Drums (kick + snare noise burst)
+\`\`\`cpp
+int16_t noiseSample() { return (int16_t)((esp_random() & 0xFFFF) - 32768) / 8; }
+
+void loop() {
+  static unsigned long lastKick = 0, lastSnare = 0;
+  const unsigned kickPeriod = 500, snarePeriod = 250;
+
+  if (millis() - lastKick > kickPeriod) lastKick = millis();
+  if (millis() - lastSnare > snarePeriod) lastSnare = millis();
+
+  float kickPhase = (millis() - lastKick) / 1000.0f;
+  float kickEnv = expf(-kickPhase * 8.0f);
+  float kick = sinf(2 * PI * 60 * kickPhase) * kickEnv * 6000;
+
+  float snarePhase = (millis() - lastSnare) / 1000.0f;
+  float snareEnv = expf(-snarePhase * 20.0f);
+  float snare = noiseSample() * snareEnv;
+
+  int16_t mixed = (int16_t)std::clamp(kick + snare, -30000.0f, 30000.0f);
+  writeStereo(mixed);
+}
+\`\`\`
+
+## Notes
+- Use Chrome for Web Serial/USB tools.
+- If audio is distorted, lower amplitude or sample rate.
+- Provide .bin files for students and flash via WebSerial tools if they don’t have toolchains.
+`
   }
 ];
 
