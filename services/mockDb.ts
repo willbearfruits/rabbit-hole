@@ -1,6 +1,8 @@
 import { Resource, ResourceType, Tutorial } from '../types';
 
 const RESOURCES_KEY = 'eduhub_resources';
+const RESOURCES_VERSION_KEY = 'eduhub_resources_version';
+const RESOURCES_VERSION = 'v3';
 const parseJSON = <T>(value: string | null, fallback: T): T => {
   if (!value) return fallback;
   try {
@@ -27,7 +29,7 @@ const INITIAL_RESOURCES: Resource[] = [
     title: 'Electro-Smith Daisy Seed – Technical Overview (PDF)',
     description: 'Hardware overview, pin maps, power domains, and peripheral specs for Daisy Seed.',
     type: ResourceType.PDF,
-    url: 'media/electrosmith-daisy-seed-overview.pdf',
+    url: './media/electrosmith-daisy-seed-overview.pdf',
     tags: ['Datasheet', 'Hardware', 'Daisy'],
     dateAdded: '2025-11-29',
     isFeatured: true
@@ -263,7 +265,10 @@ What to build:
 Try:
 - Add a rate knob (potentiometer) inline with the timing resistor.
 - Put two in detuned parallel for richer tone.
-- Run through a fuzz (Bazz Fuss or Big Muff style) and then into a filter.`
+- Run through a fuzz (Bazz Fuss or Big Muff style) and then into a filter.
+
+Schematic (reference):
+![Oscillator](https://hackaday.com/wp-content/uploads/2012/11/osc.png)`
   },
   {
     id: '106',
@@ -279,7 +284,10 @@ Build notes:
 - One-transistor fuzz; great starter circuit.
 - Use a 100k log pot on output for volume; 10uF output cap to block DC.
 - Try different transistors (2N5088, 2N3904) and clipping diodes (LED vs 1N4148).
-- Keep leads short; mind polarity on electrolytics.`
+- Keep leads short; mind polarity on electrolytics.
+
+Schematic:
+![Bazz Fuss](media/schematics/bazz-fuss.png)`
   },
   {
     id: '107',
@@ -295,7 +303,10 @@ Highlights:
 - Four gain stages with diode clipping, then a passive tone stack.
 - Swap clipping diodes for asymmetry; tweak the tone stack to shift mid scoop.
 - Keep input/output caps to taste: larger = more bass.
-- Socket parts for quick A/B while listening.`
+- Socket parts for quick A/B while listening.
+
+Stages schematic:
+![Big Muff Stages](media/schematics/big-muff-stages.png)`
   },
   {
     id: '108',
@@ -319,11 +330,14 @@ Build notes:
 
 export const getResources = (): Resource[] => {
   const stored = localStorage.getItem(RESOURCES_KEY);
-  const parsed = parseJSON<Resource[]>(stored, INITIAL_RESOURCES);
-  if (!stored) {
-    localStorage.setItem(RESOURCES_KEY, JSON.stringify(parsed));
+  const storedVersion = localStorage.getItem(RESOURCES_VERSION_KEY);
+  const needsReset = !stored || storedVersion !== RESOURCES_VERSION;
+  if (needsReset) {
+    localStorage.setItem(RESOURCES_KEY, JSON.stringify(INITIAL_RESOURCES));
+    localStorage.setItem(RESOURCES_VERSION_KEY, RESOURCES_VERSION);
+    return INITIAL_RESOURCES;
   }
-  return parsed;
+  return parseJSON<Resource[]>(stored, INITIAL_RESOURCES);
 };
 
 export const addResource = (resource: Resource): void => {

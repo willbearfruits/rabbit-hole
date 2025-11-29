@@ -9,6 +9,9 @@ import { getResources, addResource, deleteResource, getTutorials, toggleFeatured
 import { Resource, ResourceType, Tutorial, User, UserSettings } from './types';
 import { generateTutorResponse } from './services/geminiService';
 import { loginWithEmail, registerWithEmail, logout as firebaseLogout, onAuthChange, isFirebaseEnabled } from './services/firebase';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import { Downloads } from './components/Downloads';
 
 const adminAllowlist = (import.meta.env.VITE_ADMIN_EMAILS || '')
   .split(',')
@@ -386,6 +389,9 @@ const HomePage = () => {
              <Button size="lg" variant="secondary">Open Workbench</Button>
           </Link>
         </div>
+        <div className="max-w-3xl mx-auto mt-10">
+          <Downloads />
+        </div>
       </section>
 
       {/* Featured Resources (Course Front) */}
@@ -690,7 +696,15 @@ const TutorialsPage = () => {
           <div className="flex flex-col h-full gap-6">
             <div className="flex-1 bg-white p-8 rounded-xl shadow-sm border border-slate-200 overflow-y-auto prose max-w-none">
               <h1 className="text-3xl font-bold text-primary mb-6">{selectedTutorial.title}</h1>
-              <div className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">{selectedTutorial.content}</div>
+              {(() => {
+                const html = DOMPurify.sanitize(marked.parse(selectedTutorial.content) as string);
+                return (
+              <article
+                className="tutorial-content font-sans text-slate-700 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: html }}
+              />
+                );
+              })()}
             </div>
 
             {user?.settings.aiEnabled ? (
