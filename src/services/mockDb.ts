@@ -151,12 +151,56 @@ export const deleteResource = (id: string): void => {
   localStorage.setItem(RESOURCES_KEY, JSON.stringify(updated));
 };
 
+export const updateResource = (id: string, updates: Partial<Resource>): void => {
+  const current = getResources();
+  const updated = current.map(r => (r.id === id ? { ...r, ...updates } : r));
+  localStorage.setItem(RESOURCES_KEY, JSON.stringify(updated));
+};
+
 export const toggleFeaturedResource = (id: string): void => {
   const current = getResources();
   const updated = current.map(r => r.id === id ? { ...r, isFeatured: !r.isFeatured } : r);
   localStorage.setItem(RESOURCES_KEY, JSON.stringify(updated));
 };
 
+const TUTORIALS_KEY = 'eduhub_tutorials';
+const TUTORIALS_VERSION_KEY = 'eduhub_tutorials_version';
+const TUTORIALS_VERSION = 'v1';
+
 export const getTutorials = (): Tutorial[] => {
-  return INITIAL_TUTORIALS; 
+  const stored = localStorage.getItem(TUTORIALS_KEY);
+  const storedVersion = localStorage.getItem(TUTORIALS_VERSION_KEY);
+  const needsReset = !stored || storedVersion !== TUTORIALS_VERSION;
+
+  if (needsReset) {
+    localStorage.setItem(TUTORIALS_KEY, JSON.stringify(INITIAL_TUTORIALS));
+    localStorage.setItem(TUTORIALS_VERSION_KEY, TUTORIALS_VERSION);
+    return INITIAL_TUTORIALS;
+  }
+  
+  return parseJSON<Tutorial[]>(stored, INITIAL_TUTORIALS);
+};
+
+export const addTutorial = (tutorial: Tutorial): void => {
+  const current = getTutorials();
+  const updated = [tutorial, ...current];
+  localStorage.setItem(TUTORIALS_KEY, JSON.stringify(updated));
+};
+
+export const updateTutorial = (id: string, updates: Partial<Tutorial>): void => {
+  const current = getTutorials();
+  const updated = current.map(t => (t.id === id ? { ...t, ...updates } : t));
+  localStorage.setItem(TUTORIALS_KEY, JSON.stringify(updated));
+};
+
+export const deleteTutorial = (id: string): void => {
+  const current = getTutorials();
+  const updated = current.filter(t => t.id !== id);
+  localStorage.setItem(TUTORIALS_KEY, JSON.stringify(updated));
+};
+
+export const toggleFeaturedTutorial = (id: string): void => {
+  const current = getTutorials();
+  const updated = current.map(t => t.id === id ? { ...t, isFeatured: !t.isFeatured } : t);
+  localStorage.setItem(TUTORIALS_KEY, JSON.stringify(updated));
 };

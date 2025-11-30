@@ -6,6 +6,7 @@ import { ToneGenerator } from '../components/ToneGenerator';
 import { TapTempo } from '../components/TapTempo';
 import { NoteConverter } from '../components/NoteConverter';
 import { DrumMachine } from '../components/DrumMachine';
+import { ResistorQuiz } from '../components/ResistorQuiz';
 import { ExternalLink, Cpu, Zap, Music } from 'lucide-react';
 import { resolvePath } from '../utils/pathUtils';
 
@@ -51,6 +52,9 @@ export const ToolsPage = () => {
         </div>
         <div className="bg-white p-1 rounded-2xl shadow-sm border border-slate-200">
              <CapacitorCalculator />
+        </div>
+        <div className="bg-white p-1 rounded-2xl shadow-sm border border-slate-200">
+             <ResistorQuiz />
         </div>
         <div className="col-span-1 xl:col-span-2">
              <ToneGenerator />

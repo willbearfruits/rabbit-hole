@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Upload, Star, Trash2, Download } from 'lucide-react';
+import { Upload, Star, Trash2, Download, Edit } from 'lucide-react';
 import { Button } from '../components/Button';
-import { getResources, addResource, deleteResource, toggleFeaturedResource } from '../services/mockDb';
+import { getResources, addResource, deleteResource, toggleFeaturedResource, updateResource } from '../services/mockDb';
 import { Resource, ResourceType } from '../types';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,13 +10,14 @@ export const ResourcesPage = () => {
   const isAdmin = user?.role === 'ADMIN';
   const [resources, setResources] = useState<Resource[]>(getResources());
   const [filter, setFilter] = useState('');
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   
-  // New Resource Form
-  const [newTitle, setNewTitle] = useState('');
-  const [newType, setNewType] = useState<ResourceType>(ResourceType.LINK);
-  const [newUrl, setNewUrl] = useState('');
-  const [newDesc, setNewDesc] = useState('');
+  // Resource Form State
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState<ResourceType>(ResourceType.LINK);
+  const [url, setUrl] = useState('');
+  const [desc, setDesc] = useState('');
 
   const filtered = resources.filter(r => 
     r.title.toLowerCase().includes(filter.toLowerCase()) || 
@@ -35,22 +36,53 @@ export const ResourcesPage = () => {
       setResources(getResources());
   };
 
-  const handleAdd = (e: React.FormEvent) => {
+  const openAddModal = () => {
+    setEditingId(null);
+    setTitle('');
+    setType(ResourceType.LINK);
+    setUrl('');
+    setDesc('');
+    setShowModal(true);
+  };
+
+  const openEditModal = (res: Resource) => {
+    setEditingId(res.id);
+    setTitle(res.title);
+    setType(res.type);
+    setUrl(res.url);
+    setDesc(res.description);
+    setShowModal(true);
+  };
+
+  const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    const newRes: Resource = {
-      id: Date.now().toString(),
-      title: newTitle,
-      type: newType,
-      url: newUrl,
-      description: newDesc,
-      tags: ['New'],
-      dateAdded: new Date().toISOString().split('T')[0],
-      isFeatured: false
-    };
-    addResource(newRes);
+    
+    if (editingId) {
+      // Update existing
+      updateResource(editingId, {
+        title,
+        type,
+        url,
+        description: desc
+      });
+    } else {
+      // Create new
+      const newRes: Resource = {
+        id: Date.now().toString(),
+        title,
+        type,
+        url,
+        description: desc,
+        tags: ['New'],
+        dateAdded: new Date().toISOString().split('T')[0],
+        isFeatured: false
+      };
+      addResource(newRes);
+    }
+
     setResources(getResources());
-    setShowAddModal(false);
-    setNewTitle(''); setNewUrl(''); setNewDesc('');
+    setShowModal(false);
+    setTitle(''); setUrl(''); setDesc(''); setEditingId(null);
   };
 
   return (
@@ -69,7 +101,7 @@ export const ResourcesPage = () => {
             onChange={e => setFilter(e.target.value)}
           />
           {isAdmin && (
-            <Button onClick={() => setShowAddModal(true)} className="shadow-md shadow-red-200">
+            <Button onClick={openAddModal} className="shadow-md shadow-red-200">
               <Upload className="h-4 w-4 mr-2" /> Add
             </Button>
           )}
@@ -107,6 +139,9 @@ export const ResourcesPage = () => {
                     >
                         <Star className={`w-4 h-4 ${res.isFeatured ? 'fill-accent' : ''}`} />
                     </button>
+                    <Button variant="secondary" size="sm" onClick={() => openEditModal(res)} title="Edit">
+                        <Edit className="w-4 h-4" />
+                    </Button>
                     <Button variant="danger" size="sm" onClick={() => handleDelete(res.id)} title="Delete">
                         <Trash2 className="w-4 h-4" />
                     </Button>
@@ -122,32 +157,32 @@ export const ResourcesPage = () => {
         )}
       </div>
 
-      {showAddModal && (
+      {showModal && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
           <div className="bg-white rounded-xl max-w-md w-full p-6 space-y-4 shadow-2xl transform transition-all scale-100">
-            <h3 className="text-xl font-bold text-slate-800">Add Resource</h3>
-            <form onSubmit={handleAdd} className="space-y-3">
+            <h3 className="text-xl font-bold text-slate-800">{editingId ? 'Edit Resource' : 'Add Resource'}</h3>
+            <form onSubmit={handleSave} className="space-y-3">
               <div>
                 <label className="block text-sm font-medium mb-1 text-slate-700">Title</label>
-                <input required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none" value={newTitle} onChange={e => setNewTitle(e.target.value)} />
+                <input required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none" value={title} onChange={e => setTitle(e.target.value)} />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1 text-slate-700">Type</label>
-                <select className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none bg-white" value={newType} onChange={e => setNewType(e.target.value as ResourceType)}>
+                <select className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none bg-white" value={type} onChange={e => setType(e.target.value as ResourceType)}>
                   {Object.values(ResourceType).map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1 text-slate-700">URL</label>
-                <input required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none" value={newUrl} onChange={e => setNewUrl(e.target.value)} placeholder="https://..." />
+                <input required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none" value={url} onChange={e => setUrl(e.target.value)} placeholder="https://..." />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1 text-slate-700">Description</label>
-                <textarea required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none h-24" value={newDesc} onChange={e => setNewDesc(e.target.value)} />
+                <textarea required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none h-24" value={desc} onChange={e => setDesc(e.target.value)} />
               </div>
               <div className="flex justify-end gap-2 mt-6">
-                <Button type="button" variant="ghost" onClick={() => setShowAddModal(false)}>Cancel</Button>
-                <Button type="submit">Save Resource</Button>
+                <Button type="button" variant="ghost" onClick={() => setShowModal(false)}>Cancel</Button>
+                <Button type="submit">{editingId ? 'Update Resource' : 'Save Resource'}</Button>
               </div>
             </form>
           </div>
