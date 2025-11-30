@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "resources": [
     {
       "id": "10",
@@ -77,7 +77,7 @@
     {
       "id": "105",
       "title": "ESP32 I2S Audio: Sine Wave Generator",
-      "difficulty": "Intermediate",
+      "difficulty": "Beginner",
       "tags": [
         "ESP32",
         "Audio",
