@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "resources": [
     {
       "id": "10",
@@ -115,7 +115,9 @@
         "Encoder"
       ],
       "isFeatured": false,
-      "content": "# Rotary Encoders\n\nEncoders allow infinite rotation. Use the ESP32Encoder library for best performance.\n\n## Wiring\n- CLK -> GPIO 25\n- DT -> GPIO 26\n- SW -> GPIO 27\n\n## Code Example\n```cpp\n#include <ESP32Encoder.h>\nESP32Encoder encoder;\nvoid setup() {\n  encoder.attachHalfQuad(26, 25);\n  encoder.setCount(0);\n}\nvoid loop() {\n  Serial.println(encoder.getCount());\n}\n```\n"
+      "content": "# Rotary Encoders\n\nEncoders allow infinite rotation. Use the ESP32Encoder library for best performance.\n\n## Wiring\n- CLK -> GPIO 25\n- DT -> GPIO 26\n- SW -> GPIO 27\n\n## Code Example\n```cpp\n#include <ESP32Encoder.h>\nESP32Encoder encoder;\nvoid setup() {\n  encoder.attachHalfQuad(26, 25);\n  encoder.setCount(0);\n}\nvoid loop() {\n  Serial.println(encoder.getCount());\n}\n```\n",
+      "videoUrl": "",
+      "relatedResourceIds": []
     },
     {
       "id": "203",
