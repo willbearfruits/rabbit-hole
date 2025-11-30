@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, BookOpen, ChevronRight, MessageSquare, Plus, Edit, Trash2 } from 'lucide-react';
+import { Zap, BookOpen, ChevronRight, MessageSquare, Plus, Edit, Trash2, RefreshCw } from 'lucide-react';
 import { Button } from '../components/Button';
 import { getTutorials, addTutorial, updateTutorial, deleteTutorial } from '../services/mockDb';
 import { Tutorial } from '../types';
@@ -8,6 +8,7 @@ import { generateTutorResponse } from '../services/geminiService';
 import { useAuth } from '../context/AuthContext';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { syncToGithub } from '../services/githubService';
 
 export const TutorialsPage = () => {
   const { user } = useAuth();
@@ -17,6 +18,7 @@ export const TutorialsPage = () => {
   const [aiQuery, setAiQuery] = useState('');
   const [aiResponse, setAiResponse] = useState('');
   const [loadingAi, setLoadingAi] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Modal & Form State
   const [showModal, setShowModal] = useState(false);
@@ -65,7 +67,7 @@ export const TutorialsPage = () => {
     setShowModal(true);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     const tagArray = tags.split(',').map(t => t.trim()).filter(Boolean);
     
@@ -77,7 +79,6 @@ export const TutorialsPage = () => {
         videoUrl,
         content
       });
-      // Update selected tutorial if it's the one being edited
       if (selectedTutorial?.id === editingId) {
         setSelectedTutorial(prev => prev ? { ...prev, title, difficulty: difficulty as any, tags: tagArray, videoUrl, content } : null);
       }
@@ -96,18 +97,48 @@ export const TutorialsPage = () => {
 
     refreshTutorials();
     setShowModal(false);
+
+    if (user?.settings.githubToken) {
+        try {
+            setIsSyncing(true);
+            await syncToGithub(user.settings.githubToken);
+        } catch (e) {
+            alert('Saved locally, but failed to sync to GitHub. Check your Token.');
+            console.error(e);
+        } finally {
+            setIsSyncing(false);
+        }
+    }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (selectedTutorial && confirm(`Delete tutorial "${selectedTutorial.title}"?`)) {
       deleteTutorial(selectedTutorial.id);
       setSelectedTutorial(null);
       refreshTutorials();
+
+      if (user?.settings.githubToken) {
+        try {
+            setIsSyncing(true);
+            await syncToGithub(user.settings.githubToken);
+        } catch (e) {
+            alert('Deleted locally, but failed to sync to GitHub.');
+            console.error(e);
+        } finally {
+            setIsSyncing(false);
+        }
+      }
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 h-[calc(100vh-80px)] flex gap-6 animate-fade-in">
+    <div className="max-w-7xl mx-auto px-4 py-6 h-[calc(100vh-80px)] flex gap-6 animate-fade-in relative">
+      {isSyncing && (
+        <div className="fixed top-20 right-4 bg-white shadow-lg border border-slate-200 p-3 rounded-xl flex items-center gap-3 z-50 animate-bounce-in">
+            <RefreshCw className="w-5 h-5 text-accent animate-spin" />
+            <div className="text-sm font-medium text-slate-700">Syncing to Cloud...</div>
+        </div>
+      )}
       {/* Sidebar */}
       <div className="w-80 hidden md:flex flex-col gap-2 overflow-y-auto pr-2 border-r border-slate-200/60">
         <div className="flex items-center justify-between px-2 mb-4">

@@ -31,6 +31,7 @@ export interface UserSettings {
   geminiKey?: string;
   openaiKey?: string;
   claudeKey?: string;
+  githubToken?: string;
 }
 
 export interface User {

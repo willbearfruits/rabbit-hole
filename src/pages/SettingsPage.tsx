@@ -11,6 +11,7 @@ export const SettingsPage = () => {
     const [geminiKey, setGeminiKey] = useState(user?.settings.geminiKey || '');
     const [openaiKey, setOpenaiKey] = useState(user?.settings.openaiKey || '');
     const [claudeKey, setClaudeKey] = useState(user?.settings.claudeKey || '');
+    const [githubToken, setGithubToken] = useState(user?.settings.githubToken || '');
     const [saved, setSaved] = useState(false);
 
     const handleSave = () => {
@@ -19,7 +20,8 @@ export const SettingsPage = () => {
             aiEnabled,
             geminiKey,
             openaiKey,
-            claudeKey
+            claudeKey,
+            githubToken
         });
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
@@ -81,6 +83,19 @@ export const SettingsPage = () => {
                                     placeholder="AIza..." 
                                 />
                                 <p className="text-xs text-slate-400 mt-2">Required for the AI Tutor feature.</p>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">GitHub Personal Access Token</label>
+                                <input 
+                                    type="password" 
+                                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all" 
+                                    value={githubToken} 
+                                    onChange={e => setGithubToken(e.target.value)} 
+                                    placeholder="ghp_..." 
+                                />
+                                <p className="text-xs text-slate-400 mt-2">
+                                    Required for <strong>Auto-Save</strong>. Create a token with 'repo' scope at <a href="https://github.com/settings/tokens" target="_blank" rel="noreferrer" className="text-accent underline">GitHub Settings</a>.
+                                </p>
                             </div>
                             <div className="opacity-60 pointer-events-none grayscale">
                                 <label className="block text-sm font-medium text-slate-700 mb-1">ChatGPT API Key (Coming Soon)</label>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Upload, Star, Trash2, Download, Edit, FileText, Link as LinkIcon, FolderOpen } from 'lucide-react';
+import { Upload, Star, Trash2, Download, Edit, FileText, Link as LinkIcon, FolderOpen, Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '../components/Button';
 import { getResources, addResource, deleteResource, toggleFeaturedResource, updateResource } from '../services/mockDb';
 import { Resource, ResourceType } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { resolvePath } from '../utils/pathUtils';
+import { syncToGithub } from '../services/githubService';
 
 export const ResourcesPage = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ export const ResourcesPage = () => {
   const [type, setType] = useState<ResourceType>(ResourceType.LINK);
   const [url, setUrl] = useState('');
   const [desc, setDesc] = useState('');
+  const [isSyncing, setIsSyncing] = useState(false);
   
   // Input Mode State
   const [inputMode, setInputMode] = useState<'url' | 'file'>('url');
@@ -28,10 +30,22 @@ export const ResourcesPage = () => {
     r.tags.some(t => t.toLowerCase().includes(filter.toLowerCase()))
   );
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Delete this resource?')) {
       deleteResource(id);
       setResources(getResources());
+      
+      if (user?.settings.githubToken) {
+        try {
+            setIsSyncing(true);
+            await syncToGithub(user.settings.githubToken);
+        } catch (e) {
+            alert('Deleted locally, but failed to sync to GitHub.');
+            console.error(e);
+        } finally {
+            setIsSyncing(false);
+        }
+      }
     }
   };
 
@@ -63,22 +77,7 @@ export const ResourcesPage = () => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      
-      // Auto-fill details
       const fileName = file.name;
-      // Use resolvePath if you want to preview, but for storage we keep the relative path '/media/...'
-      // Actually, let's store the clean relative path. The rendering component uses resolvePath if needed, 
-      // OR we store it resolved? 
-      // Looking at mockDb.ts, it stores `resolvePath('/media/...')`.
-      // But resolvePath depends on import.meta.env.BASE_URL. 
-      // If we store it resolved, it might double-resolve if we aren't careful.
-      // mockDb.ts usage: `url: resolvePath('/media/electrosmith-daisy-seed-overview.pdf')`
-      // So we should store it as `/media/filename` and let the consumer resolve it? 
-      // Wait, mockDb stores the *result* of resolvePath. 
-      // Let's just store `/media/${fileName}` and let the consuming link handle it, 
-      // OR wrap it with resolvePath here. 
-      // Let's stick to the pattern: store the *final* URL.
-      
       setUrl(resolvePath(`/media/${fileName}`));
 
       if (!editingId) {
@@ -92,19 +91,12 @@ export const ResourcesPage = () => {
     }
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (editingId) {
-      // Update existing
-      updateResource(editingId, {
-        title,
-        type,
-        url,
-        description: desc
-      });
+      updateResource(editingId, { title, type, url, description: desc });
     } else {
-      // Create new
       const newRes: Resource = {
         id: Date.now().toString(),
         title,
@@ -121,10 +113,30 @@ export const ResourcesPage = () => {
     setResources(getResources());
     setShowModal(false);
     setTitle(''); setUrl(''); setDesc(''); setEditingId(null);
+
+    // Auto-Sync
+    if (user?.settings.githubToken) {
+        try {
+            setIsSyncing(true);
+            await syncToGithub(user.settings.githubToken);
+            // Optional: Toast success
+        } catch (e) {
+            alert('Saved locally, but failed to sync to GitHub. Check your Token.');
+            console.error(e);
+        } finally {
+            setIsSyncing(false);
+        }
+    }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6 animate-fade-in">
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6 animate-fade-in relative">
+      {isSyncing && (
+        <div className="fixed top-20 right-4 bg-white shadow-lg border border-slate-200 p-3 rounded-xl flex items-center gap-3 z-50 animate-bounce-in">
+            <RefreshCw className="w-5 h-5 text-accent animate-spin" />
+            <div className="text-sm font-medium text-slate-700">Syncing to Cloud...</div>
+        </div>
+      )}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4">
         <div>
             <h2 className="text-3xl font-bold text-slate-800">Media Library</h2>
