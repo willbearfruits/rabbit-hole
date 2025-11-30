@@ -24,6 +24,7 @@ export interface Tutorial {
   tags: string[];
   isFeatured?: boolean;
   videoUrl?: string; // YouTube or other embeddable URL
+  relatedResourceIds?: string[];
 }
 
 export interface UserSettings {
