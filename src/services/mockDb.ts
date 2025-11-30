@@ -134,12 +134,16 @@ export const exportDatabase = (): string => {
   const tutorials = getTutorials();
   // Bump version by 1 for the export
   const currentVersion = parseInt(localStorage.getItem('eduhub_db_version') || '0');
+  const newVersion = currentVersion + 1;
   
   const exportData = {
-    version: currentVersion + 1,
+    version: newVersion,
     resources,
     tutorials
   };
+
+  // Update local version so subsequent exports increment correctly
+  localStorage.setItem('eduhub_db_version', newVersion.toString());
   
   return JSON.stringify(exportData, null, 2);
 };
