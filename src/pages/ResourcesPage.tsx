@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Upload, Star, Trash2, Download, Edit } from 'lucide-react';
+import { Upload, Star, Trash2, Download, Edit, FileText, Link as LinkIcon, Loader2 } from 'lucide-react';
 import { Button } from '../components/Button';
 import { getResources, addResource, deleteResource, toggleFeaturedResource, updateResource } from '../services/mockDb';
+import { uploadFile } from '../services/storageService';
 import { Resource, ResourceType } from '../types';
 import { useAuth } from '../context/AuthContext';
 
@@ -18,6 +19,11 @@ export const ResourcesPage = () => {
   const [type, setType] = useState<ResourceType>(ResourceType.LINK);
   const [url, setUrl] = useState('');
   const [desc, setDesc] = useState('');
+  
+  // Upload State
+  const [inputMode, setInputMode] = useState<'url' | 'file'>('url');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const filtered = resources.filter(r => 
     r.title.toLowerCase().includes(filter.toLowerCase()) || 
@@ -42,6 +48,8 @@ export const ResourcesPage = () => {
     setType(ResourceType.LINK);
     setUrl('');
     setDesc('');
+    setInputMode('url');
+    setSelectedFile(null);
     setShowModal(true);
   };
 
@@ -51,38 +59,72 @@ export const ResourcesPage = () => {
     setType(res.type);
     setUrl(res.url);
     setDesc(res.description);
+    setInputMode('url'); // Default to URL for editing, unless we add file replacement later
+    setSelectedFile(null);
     setShowModal(true);
   };
 
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (editingId) {
-      // Update existing
-      updateResource(editingId, {
-        title,
-        type,
-        url,
-        description: desc
-      });
-    } else {
-      // Create new
-      const newRes: Resource = {
-        id: Date.now().toString(),
-        title,
-        type,
-        url,
-        description: desc,
-        tags: ['New'],
-        dateAdded: new Date().toISOString().split('T')[0],
-        isFeatured: false
-      };
-      addResource(newRes);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      
+      // Auto-detect details if creating new
+      if (!editingId) {
+        if (!title) setTitle(file.name.split('.')[0].replace(/[_-]/g, ' '));
+        
+        const ext = file.name.split('.').pop()?.toLowerCase();
+        if (ext === 'pdf') setType(ResourceType.PDF);
+        else if (['c', 'cpp', 'h', 'py', 'js', 'ts', 'json'].includes(ext || '')) setType(ResourceType.CODE);
+        else setType(ResourceType.FILE);
+      }
     }
+  };
 
-    setResources(getResources());
-    setShowModal(false);
-    setTitle(''); setUrl(''); setDesc(''); setEditingId(null);
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUploading(true);
+
+    try {
+      let finalUrl = url;
+
+      if (inputMode === 'file' && selectedFile) {
+        // Upload to Firebase
+        finalUrl = await uploadFile(selectedFile, 'resources');
+      }
+
+      if (editingId) {
+        // Update existing
+        updateResource(editingId, {
+          title,
+          type,
+          url: finalUrl,
+          description: desc
+        });
+      } else {
+        // Create new
+        const newRes: Resource = {
+          id: Date.now().toString(),
+          title,
+          type,
+          url: finalUrl,
+          description: desc,
+          tags: ['New'],
+          dateAdded: new Date().toISOString().split('T')[0],
+          isFeatured: false
+        };
+        addResource(newRes);
+      }
+
+      setResources(getResources());
+      setShowModal(false);
+      setTitle(''); setUrl(''); setDesc(''); setEditingId(null); setSelectedFile(null);
+    } catch (error) {
+      console.error("Error saving resource:", error);
+      alert("Failed to save resource. See console for details.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -166,23 +208,61 @@ export const ResourcesPage = () => {
                 <label className="block text-sm font-medium mb-1 text-slate-700">Title</label>
                 <input required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none" value={title} onChange={e => setTitle(e.target.value)} />
               </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1 text-slate-700">Resource Source</label>
+                <div className="flex bg-slate-100 p-1 rounded-lg mb-2">
+                  <button 
+                    type="button"
+                    onClick={() => setInputMode('url')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all ${inputMode === 'url' ? 'bg-white shadow text-primary' : 'text-slate-500 hover:text-slate-700'}`}
+                  >
+                    <LinkIcon className="w-4 h-4" /> External URL
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setInputMode('file')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all ${inputMode === 'file' ? 'bg-white shadow text-primary' : 'text-slate-500 hover:text-slate-700'}`}
+                  >
+                    <Upload className="w-4 h-4" /> Upload File
+                  </button>
+                </div>
+                
+                {inputMode === 'url' ? (
+                  <input required={!editingId} className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none" value={url} onChange={e => setUrl(e.target.value)} placeholder="https://..." />
+                ) : (
+                  <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 text-center hover:bg-slate-50 transition-colors relative">
+                    <input 
+                      type="file" 
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      onChange={handleFileChange}
+                    />
+                    <div className="pointer-events-none">
+                      <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                      <p className="text-sm text-slate-600">{selectedFile ? selectedFile.name : 'Click to upload or drag file'}</p>
+                      <p className="text-xs text-slate-400 mt-1">PDF, ZIP, Code, Images</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div>
                 <label className="block text-sm font-medium mb-1 text-slate-700">Type</label>
                 <select className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none bg-white" value={type} onChange={e => setType(e.target.value as ResourceType)}>
                   {Object.values(ResourceType).map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-slate-700">URL</label>
-                <input required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none" value={url} onChange={e => setUrl(e.target.value)} placeholder="https://..." />
-              </div>
+
               <div>
                 <label className="block text-sm font-medium mb-1 text-slate-700">Description</label>
                 <textarea required className="w-full border border-slate-300 p-2.5 rounded-lg focus:ring-2 focus:ring-accent outline-none h-24" value={desc} onChange={e => setDesc(e.target.value)} />
               </div>
+
               <div className="flex justify-end gap-2 mt-6">
-                <Button type="button" variant="ghost" onClick={() => setShowModal(false)}>Cancel</Button>
-                <Button type="submit">{editingId ? 'Update Resource' : 'Save Resource'}</Button>
+                <Button type="button" variant="ghost" onClick={() => setShowModal(false)} disabled={uploading}>Cancel</Button>
+                <Button type="submit" disabled={uploading}>
+                  {uploading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</> : (editingId ? 'Update Resource' : 'Save Resource')}
+                </Button>
               </div>
             </form>
           </div>
