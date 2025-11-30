@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Zap, Lock, Save } from 'lucide-react';
+import { Zap, Lock, Save, Download, Database } from 'lucide-react';
 import { Button } from '../components/Button';
 import { useAuth } from '../context/AuthContext';
+import { exportDatabase } from '../services/mockDb';
 
 export const SettingsPage = () => {
     const { user, updateSettings } = useAuth();
+    const isAdmin = user?.role === 'ADMIN';
     const [aiEnabled, setAiEnabled] = useState(user?.settings.aiEnabled || false);
     const [geminiKey, setGeminiKey] = useState(user?.settings.geminiKey || '');
     const [openaiKey, setOpenaiKey] = useState(user?.settings.openaiKey || '');
@@ -23,11 +25,25 @@ export const SettingsPage = () => {
         setTimeout(() => setSaved(false), 2000);
     };
 
+    const handleExport = () => {
+        const data = exportDatabase();
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'database.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
             <h2 className="text-3xl font-bold text-slate-800 mb-8">User Settings</h2>
             
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden space-y-0">
+                {/* AI Settings */}
                 <div className="p-8 border-b border-slate-100 bg-gradient-to-r from-red-50/50 to-transparent">
                     <h3 className="text-lg font-bold text-primary mb-4 flex items-center gap-2">
                         <Zap className="w-5 h-5 text-accent" /> AI Lab Assistant
@@ -48,6 +64,7 @@ export const SettingsPage = () => {
                     </div>
                 </div>
 
+                {/* API Keys */}
                 <div className="p-8 space-y-8">
                     <div className="space-y-4">
                         <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
@@ -79,6 +96,26 @@ export const SettingsPage = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Admin Section */}
+                {isAdmin && (
+                    <div className="p-8 border-t border-slate-100 bg-slate-50/50">
+                        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <Database className="w-5 h-5 text-slate-500" /> Content Management
+                        </h3>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <label className="text-slate-800 font-medium block mb-1">Export Database</label>
+                                <p className="text-sm text-slate-500 max-w-md">
+                                    Download your local edits as a JSON file. Commit this file to <code>public/database.json</code> in the repository to publish changes to all students.
+                                </p>
+                            </div>
+                            <Button variant="secondary" onClick={handleExport}>
+                                <Download className="w-4 h-4 mr-2" /> Download JSON
+                            </Button>
+                        </div>
+                    </div>
+                )}
 
                 <div className="p-6 bg-slate-50 border-t border-slate-100 flex justify-end">
                     <Button onClick={handleSave} className="w-40 shadow-lg shadow-red-200">

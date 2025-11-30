@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
@@ -9,6 +9,7 @@ import { ToolsPage } from './pages/ToolsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { AuthPage } from './pages/AuthPage';
 import { DoomPage } from './pages/DoomPage';
+import { initializeDatabase } from './services/mockDb';
 
 const AppContent = () => {
   const { user } = useAuth();
@@ -41,6 +42,10 @@ const AppContent = () => {
 };
 
 const App = () => {
+  useEffect(() => {
+    initializeDatabase();
+  }, []);
+
   return (
     <AuthProvider>
       <HashRouter>
