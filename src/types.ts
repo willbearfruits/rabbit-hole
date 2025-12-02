@@ -28,6 +28,14 @@ export interface Tutorial {
   relatedResourceIds?: string[];
 }
 
+export interface Artist {
+  id: string;
+  name: string;
+  bio: string;
+  url: string;
+  category: 'Glitch' | 'Noise' | 'Performance' | 'Media Art' | 'DIY' | 'Film';
+}
+
 export interface UserSettings {
   aiEnabled: boolean;
   geminiKey?: string;

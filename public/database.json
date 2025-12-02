@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "resources": [
     {
       "id": "10",
@@ -156,6 +156,253 @@
       "tags": ["ESP32", "Bluetooth", "Wireless"],
       "isFeatured": false,
       "content": "# Bluetooth Serial\n\nThe easiest way to talk to a phone/PC wirelessly.\n\n```cpp\n#include \"BluetoothSerial.h\"\nBluetoothSerial SerialBT;\n\nvoid setup() {\n  SerialBT.begin(\"ESP32_Device\");\n}\n\nvoid loop() {\n  if (SerialBT.available()) {\n    Serial.write(SerialBT.read());\n  }\n}\n```\n"
+    }
+  ],
+  "artists": [
+    {
+      "id": "a1",
+      "name": "Rosa Menkman",
+      "bio": "Dutch glitch artist + theorist exploring image compression, noise, and resolution politics.",
+      "url": "https://rosa-menkman.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a2",
+      "name": "Nick Briz",
+      "bio": "Artist/educator hacking codecs, YouTube infrastructures, and digital rights.",
+      "url": "https://nickbriz.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a3",
+      "name": "Jon Satrom",
+      "bio": "System-based glitch performer working with OS failures and software improvisation.",
+      "url": "http://jonsatrom.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a4",
+      "name": "Karl Klomp",
+      "bio": "Hardware hacker creating analog video glitch devices and “dirty mixers”.",
+      "url": "https://karlklomp.nl",
+      "category": "Glitch"
+    },
+    {
+      "id": "a5",
+      "name": "Gijs Gieskes",
+      "bio": "Artist/maker designing small glitchy electronic instruments and video benders.",
+      "url": "https://gijs.gieskes.nl",
+      "category": "Glitch"
+    },
+    {
+      "id": "a6",
+      "name": "Takeshi Murata",
+      "bio": "Visual artist known for pioneering datamosh aesthetics in early digital video art.",
+      "url": "https://www.pedroe.net/takeshi-murata/",
+      "category": "Glitch"
+    },
+    {
+      "id": "a7",
+      "name": "Ryoji Ikeda",
+      "bio": "Japanese minimal sound/data artist working with ultrasonics, math, and high-contrast visuals.",
+      "url": "https://www.ryojiikeda.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a8",
+      "name": "Merzbow (Masami Akita)",
+      "bio": "Pioneer of Japanese noise; extreme electronics, feedback, and sonic density.",
+      "url": "https://merzbow.bandcamp.com",
+      "category": "Noise"
+    },
+    {
+      "id": "a9",
+      "name": "La Monte Young",
+      "bio": "Minimalist composer exploring tuning systems, drones, and long-duration music.",
+      "url": "https://www.melafoundation.org/lamonteyoung.htm",
+      "category": "Noise"
+    },
+    {
+      "id": "a10",
+      "name": "Alvin Lucier",
+      "bio": "Composer examining acoustics, perception, and resonance.",
+      "url": "https://alvinlucier.org",
+      "category": "Noise"
+    },
+    {
+      "id": "a11",
+      "name": "Pauline Oliveros",
+      "bio": "Composer and creator of Deep Listening; focus on body, attention, and sonic awareness.",
+      "url": "https://www.paulineoliveros.us",
+      "category": "Noise"
+    },
+    {
+      "id": "a12",
+      "name": "Eliane Radigue",
+      "bio": "Composer of long, evolving analog drone works using ARP 2500 and later acoustic players.",
+      "url": "https://www.elianeradigue.com",
+      "category": "Noise"
+    },
+    {
+      "id": "a13",
+      "name": "Holly Herndon",
+      "bio": "Musician using AI, voice processing, and networked collaboration.",
+      "url": "https://hollyherndon.com",
+      "category": "Noise"
+    },
+    {
+      "id": "a14",
+      "name": "Pan Sonic",
+      "bio": "Finnish duo known for minimal, brutal electronics built from self-designed devices.",
+      "url": "https://mute.com/mute/pan-sonic",
+      "category": "Noise"
+    },
+    {
+      "id": "a15",
+      "name": "Marina Abramović",
+      "bio": "Performance art icon exploring endurance, vulnerability, and ritual.",
+      "url": "https://www.marinaabramovic.com",
+      "category": "Performance"
+    },
+    {
+      "id": "a16",
+      "name": "Stelarc",
+      "bio": "Australian artist integrating robotics + prosthetics + tech into the body (third ear, suspensions).",
+      "url": "https://stelarc.org",
+      "category": "Performance"
+    },
+    {
+      "id": "a17",
+      "name": "Chris Burden",
+      "bio": "Early performance artist exploring danger, violence, and systems.",
+      "url": "http://www.chrisburden.com",
+      "category": "Performance"
+    },
+    {
+      "id": "a18",
+      "name": "Rebecca Horn",
+      "bio": "Sculptor/performance artist extending the body with machines, feathers, prosthetics.",
+      "url": "https://www.tate.org.uk/art/artists/rebecca-horn-1290",
+      "category": "Performance"
+    },
+    {
+      "id": "a19",
+      "name": "Tehching Hsieh",
+      "bio": "Performance artist known for year-long endurance works testing time, labor, and life.",
+      "url": "https://www.tehchinghsieh.com",
+      "category": "Performance"
+    },
+    {
+      "id": "a20",
+      "name": "Nam June Paik",
+      "bio": "Father of video art; TV sculptures, satellites, interactivity.",
+      "url": "https://www.paikstudios.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a21",
+      "name": "Bill Viola",
+      "bio": "Slow-motion spiritual video environments with strong art-historical grounding.",
+      "url": "https://billviola.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a22",
+      "name": "Laurie Anderson",
+      "bio": "Multimedia artist merging performance, storytelling, electronics, and instruments.",
+      "url": "https://www.laurieanderson.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a23",
+      "name": "Golan Levin",
+      "bio": "Artist-engineer making interactive systems and audiovisual tools.",
+      "url": "https://flong.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a24",
+      "name": "Hito Steyerl",
+      "bio": "Artist/filmmaker analyzing digital images, surveillance, and geopolitics.",
+      "url": "https://www.artsy.net/artist/hito-steyerl",
+      "category": "Media Art"
+    },
+    {
+      "id": "a25",
+      "name": "James Turrell",
+      "bio": "Light + perception artist shaping architecture with pure color.",
+      "url": "https://jamesturrell.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a26",
+      "name": "Reed Ghazala",
+      "bio": "Father of circuit bending; turning cheap electronics into expressive instruments.",
+      "url": "http://www.anti-theory.com/soundart/circuitbend/",
+      "category": "DIY"
+    },
+    {
+      "id": "a27",
+      "name": "Eric Archer",
+      "bio": "Designer of analog noise devices, drum machines, and synth circuits.",
+      "url": "http://ericarcher.net",
+      "category": "DIY"
+    },
+    {
+      "id": "a28",
+      "name": "Meng Qi",
+      "bio": "Synth designer blending organic interfaces with experimental electronics (Wing Pinger, etc.).",
+      "url": "https://mengqimusic.com",
+      "category": "DIY"
+    },
+    {
+      "id": "a29",
+      "name": "Ciat-Lonbarde (Peter Blasser)",
+      "bio": "Maker of wooden, touch-based, chaotic analog instruments.",
+      "url": "https://ciat-lonbarde.net",
+      "category": "DIY"
+    },
+    {
+      "id": "a30",
+      "name": "Martin Howse",
+      "bio": "Artist exploring earth signals, electromagnetism, and psychogeophysics.",
+      "url": "https://www.1010.co.uk",
+      "category": "DIY"
+    },
+    {
+      "id": "a31",
+      "name": "Tristan Perich",
+      "bio": "Composer using 1-bit electronics and minimal systems in both sound and visual work.",
+      "url": "https://www.tristanperich.com",
+      "category": "DIY"
+    },
+    {
+      "id": "a32",
+      "name": "Leos Carax",
+      "bio": "French filmmaker blending surrealism, music, and dream logic (Holy Motors).",
+      "url": "https://www.imdb.com/name/nm0001982/",
+      "category": "Film"
+    },
+    {
+      "id": "a33",
+      "name": "David Lynch",
+      "bio": "Filmmaker creating atmospheric, symbolic, sound-driven surreal worlds.",
+      "url": "https://www.davidlynch.com",
+      "category": "Film"
+    },
+    {
+      "id": "a34",
+      "name": "Shinya Tsukamoto",
+      "bio": "Japanese director exploring body-machine violence (Tetsuo).",
+      "url": "https://www.imdb.com/name/nm0870207/",
+      "category": "Film"
+    },
+    {
+      "id": "a35",
+      "name": "Harmony Korine",
+      "bio": "American filmmaker exploring glitchy Americana, chaos, and subculture.",
+      "url": "https://www.imdb.com/name/nm0460788/",
+      "category": "Film"
     }
   ]
 }

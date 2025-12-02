@@ -1,64 +1,70 @@
-import React from 'react';
-import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Download, Code, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Zap, Code, Mic, Monitor, Layers, Palette, Film, Music, Plus, Mail } from 'lucide-react';
 import { Button } from '../components/Button';
+import { getArtists } from '../services/mockDb';
+import { Artist } from '../types';
 
 export const MusraraPage = () => {
+  const artists = getArtists();
+  
+  // Group artists by category
+  const categories = {
+    'Glitch': artists.filter(a => a.category === 'Glitch'),
+    'Noise': artists.filter(a => a.category === 'Noise'),
+    'Performance': artists.filter(a => a.category === 'Performance'),
+    'Media Art': artists.filter(a => a.category === 'Media Art'),
+    'DIY': artists.filter(a => a.category === 'DIY'),
+    'Film': artists.filter(a => a.category === 'Film'),
+  };
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 space-y-12 animate-fade-in">
+    <div className="max-w-7xl mx-auto px-4 py-12 space-y-16 animate-fade-in">
       
       {/* Header */}
-      <div className="text-center space-y-4 mb-12">
-        <h1 className="text-5xl font-black text-slate-900 tracking-tight">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Musrara</span> Toolkit
+      <div className="text-center space-y-6 mb-16">
+        <h1 className="text-6xl font-black text-slate-900 tracking-tighter">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-red-500">Musrara</span> Toolkit
         </h1>
-        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+        <p className="text-2xl text-slate-500 max-w-3xl mx-auto font-light">
           Curated digital weaponry for New Media students. 
-          Everything you need to bend data, generate chaos, and build the future.
+          <br/><span className="text-slate-400 text-lg">Bend data. Generate chaos. Build the future.</span>
         </p>
       </div>
 
       {/* Section 1: Essential Software */}
-      <section className="space-y-6">
-        <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
-          <div className="p-3 bg-blue-50 rounded-xl text-blue-600">
-            <Wrench className="w-6 h-6" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800">Essential Software</h2>
-            <p className="text-slate-500 text-sm">The standard issue survival kit.</p>
-          </div>
-        </div>
+      <section className="space-y-8">
+        <SectionHeader icon={<Wrench className="w-6 h-6" />} title="Standard Issue Kit" subtitle="Essential software for databending and destruction." color="text-blue-600 bg-blue-50" />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <SoftwareCard 
                 title="Avidemux" 
-                desc="Simple video cutter and encoder. The 'Swiss Army Knife' of video glitching."
+                desc="The 'Swiss Army Knife' of video glitching. Cut, encode, and break I-frames."
                 url="http://avidemux.sourceforge.net/"
                 icon={<Video className="w-5 h-5 text-blue-500" />}
             />
             <SoftwareCard 
                 title="Hex Fiend" 
-                desc="MacOS Hex Editor. Essential for databending raw files."
+                desc="MacOS Hex Editor. Essential for databending raw headers and bodies."
                 url="https://hexfiend.com/"
                 icon={<Code className="w-5 h-5 text-slate-700" />}
                 platform="Mac"
             />
             <SoftwareCard 
                 title="HxD" 
-                desc="Windows Hex Editor. Robust and fast."
+                desc="Windows Hex Editor. Robust, fast, and handles massive files."
                 url="https://mh-nexus.de/en/hxd/"
                 icon={<Code className="w-5 h-5 text-slate-700" />}
                 platform="Win"
             />
              <SoftwareCard 
                 title="Audacity" 
-                desc="The open-source audio editor. Waveform destruction guaranteed."
+                desc="Open-source audio editor. Treat data as sound, sound as data."
                 url="https://www.audacityteam.org/"
-                icon={<ExternalLink className="w-5 h-5 text-orange-500" />}
+                icon={<Mic className="w-5 h-5 text-orange-500" />}
             />
              <SoftwareCard 
                 title="GIMP" 
-                desc="GNU Image Manipulation Program. Photoshop, but free and scriptable."
+                desc="GNU Image Manipulation Program. Scriptable open-source alternative to Photoshop."
                 url="https://www.gimp.org/"
                 icon={<Image className="w-5 h-5 text-green-600" />}
             />
@@ -66,108 +72,120 @@ export const MusraraPage = () => {
       </section>
 
       {/* Section 2: CLI Agents */}
-      <section className="space-y-6">
-        <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
-            <div className="p-3 bg-slate-800 rounded-xl text-white">
-                <Terminal className="w-6 h-6" />
-            </div>
-            <div>
-                <h2 className="text-2xl font-bold text-slate-800">AI Command Line Tools</h2>
-                <p className="text-slate-500 text-sm">Code faster directly from your terminal.</p>
-            </div>
-        </div>
+      <section className="space-y-8">
+        <SectionHeader icon={<Terminal className="w-6 h-6" />} title="AI Command Line" subtitle="Interact with LLMs directly from your terminal." color="text-slate-100 bg-slate-800" />
 
-        <div className="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm shadow-xl overflow-hidden relative group">
-            <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-40 transition-opacity">
-                <Terminal className="w-12 h-12" />
+        <div className="bg-slate-900 rounded-2xl p-8 text-slate-300 font-mono text-sm shadow-2xl overflow-hidden relative group border border-slate-700">
+            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+                <Terminal className="w-48 h-48" />
             </div>
             
-            <div className="space-y-6">
-                <div className="space-y-2">
-                    <h3 className="text-purple-400 font-bold flex items-center gap-2">
-                        <Zap className="w-4 h-4" /> Gemini CLI (Unofficial/SDK)
-                    </h3>
-                    <p className="text-xs text-slate-500 mb-2">Install the Google GenAI SDK to build your own tools:</p>
-                    <div className="bg-black/50 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
-                        <code>npm install -g @google/generative-ai</code>
-                        <CopyButton text="npm install -g @google/generative-ai" />
-                    </div>
-                </div>
-
-                <div className="space-y-2">
-                    <h3 className="text-orange-400 font-bold flex items-center gap-2">
-                        <Brain className="w-4 h-4" /> Claude Code
-                    </h3>
-                    <p className="text-xs text-slate-500 mb-2">Anthropic's new agentic coding tool:</p>
-                    <div className="bg-black/50 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
-                        <code>npm install -g @anthropic-ai/claude-code</code>
-                        <CopyButton text="npm install -g @anthropic-ai/claude-code" />
-                    </div>
-                </div>
-
-                <div className="space-y-2">
-                    <h3 className="text-blue-400 font-bold flex items-center gap-2">
-                        <Code className="w-4 h-4" /> GitHub Copilot CLI (Codex)
-                    </h3>
-                    <p className="text-xs text-slate-500 mb-2">The official CLI extension for GitHub Copilot:</p>
-                    <div className="bg-black/50 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
-                        <code>gh extension install github/gh-copilot</code>
-                        <CopyButton text="gh extension install github/gh-copilot" />
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <CommandBlock 
+                    label="Gemini CLI" 
+                    cmd="npm install -g @google/gemini-cli" 
+                    desc="Google's multimodal model in your shell."
+                    color="text-blue-400"
+                />
+                <CommandBlock 
+                    label="Claude Code" 
+                    cmd="npm install -g @anthropic-ai/claude-code" 
+                    desc="Anthropic's agentic coding assistant."
+                    color="text-orange-400"
+                />
+                <CommandBlock 
+                    label="Codex / Copilot" 
+                    cmd="npm i -g @openai/codex" 
+                    desc="OpenAI's code completion model."
+                    color="text-green-400"
+                />
             </div>
         </div>
       </section>
 
       {/* Section 3: Generative Media */}
-      <section className="space-y-6">
-        <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
-            <div className="p-3 bg-gradient-to-tr from-pink-500 to-purple-500 rounded-xl text-white">
-                <Image className="w-6 h-6" />
-            </div>
-            <div>
-                <h2 className="text-2xl font-bold text-slate-800">Generative Media</h2>
-                <p className="text-slate-500 text-sm">Image, Video, and Audio synthesis.</p>
-            </div>
-        </div>
+      <section className="space-y-8">
+        <SectionHeader icon={<Brain className="w-6 h-6" />} title="Generative Synthesis" subtitle="AI models for Image, Video, and Text." color="text-pink-600 bg-pink-50" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <ResourceLink 
                 title="Leonardo.ai" 
-                desc="High-quality artistic image generation with fine-tuned models."
+                desc="Fine-tuned artistic image generation models."
                 url="https://leonardo.ai/"
                 tag="Image"
             />
              <ResourceLink 
-                title="Google ImageFX (Imagen 3)" 
-                desc="Google's latest photorealistic image model. Fast and high fidelity."
+                title="Google ImageFX" 
+                desc="Imagen 3. Fast, photorealistic, high fidelity."
                 url="https://aitestkitchen.withgoogle.com/tools/image-fx"
                 tag="Image"
             />
              <ResourceLink 
+                title="DALL-E Mini (Craiyon)" 
+                desc="The classic lo-fi, surreal image generator."
+                url="https://www.craiyon.com/"
+                tag="Image"
+            />
+             <ResourceLink 
                 title="RunwayML" 
-                desc="The gold standard for AI video generation (Gen-2, Gen-3)."
+                desc="Gen-2 & Gen-3 Alpha. The standard for AI video."
                 url="https://runwayml.com/"
                 tag="Video"
             />
              <ResourceLink 
-                title="Pika Labs" 
-                desc="Text-to-video and image-to-video generation. Great for animation."
-                url="https://pika.art/"
-                tag="Video"
+                title="Ollama" 
+                desc="Run Llama 3, Mistral, and Gemma locally."
+                url="https://ollama.com/"
+                tag="Local AI"
+            />
+             <ResourceLink 
+                title="UbuWeb" 
+                desc="The definitive archive of avant-garde media."
+                url="https://www.ubu.com/"
+                tag="Archive"
             />
              <ResourceLink 
                 title="HuggingChat" 
-                desc="Open-source alternative to ChatGPT. Access Llama 3, Mistral, etc."
+                desc="Open-source chat with Llama 3, Mistral, etc."
                 url="https://huggingface.co/chat/"
                 tag="LLM"
             />
              <ResourceLink 
                 title="Google Project IDX" 
-                desc="Browser-based full-stack IDE with AI assistance. (Firebase Studio)."
+                desc="Full-stack IDE with AI (Firebase Studio)."
                 url="https://idx.google.com/"
                 tag="Dev"
             />
+        </div>
+      </section>
+
+      {/* Section 4: Artist Library */}
+      <section className="space-y-8">
+        <div className="flex justify-between items-end border-b border-slate-200 pb-4">
+             <SectionHeader icon={<Palette className="w-6 h-6" />} title="The Reference Archive" subtitle="Pioneers of Glitch, Noise, and New Media." color="text-purple-600 bg-purple-50" noBorder />
+             
+             <a href="mailto:glitches@therabbithole.edu?subject=Artist%20Suggestion&body=Artist%20Name:%0AURL:%0ACategory:%0ABio:" className="hidden md:block">
+                <Button variant="secondary" size="sm">
+                    <Plus className="w-4 h-4 mr-2" /> Suggest Artist
+                </Button>
+             </a>
+        </div>
+
+        <div className="space-y-12">
+            <ArtistCategory title="Glitch / Code / Signal" artists={categories['Glitch']} icon={<Monitor className="w-5 h-5" />} />
+            <ArtistCategory title="Noise / Sound Art" artists={categories['Noise']} icon={<Zap className="w-5 h-5" />} />
+            <ArtistCategory title="Performance / Body" artists={categories['Performance']} icon={<UserIcon />} />
+            <ArtistCategory title="Media Art / Interactive" artists={categories['Media Art']} icon={<Layers className="w-5 h-5" />} />
+            <ArtistCategory title="DIY / Circuit Bending" artists={categories['DIY']} icon={<Wrench className="w-5 h-5" />} />
+            <ArtistCategory title="Film / Surrealism" artists={categories['Film']} icon={<Film className="w-5 h-5" />} />
+        </div>
+        
+        <div className="md:hidden text-center pt-8">
+            <a href="mailto:glitches@therabbithole.edu?subject=Artist%20Suggestion&body=Artist%20Name:%0AURL:%0ACategory:%0ABio:">
+                <Button variant="secondary" className="w-full">
+                    <Mail className="w-4 h-4 mr-2" /> Suggest New Artist
+                </Button>
+            </a>
         </div>
       </section>
 
@@ -175,12 +193,37 @@ export const MusraraPage = () => {
   );
 };
 
-// Helper Components
+// --- Helper Components ---
+
+const SectionHeader = ({ icon, title, subtitle, color, noBorder }: any) => (
+    <div className={`flex items-center gap-4 ${!noBorder ? 'border-b border-slate-200 pb-4' : ''}`}>
+        <div className={`p-3 rounded-xl ${color}`}>
+            {icon}
+        </div>
+        <div>
+            <h2 className="text-2xl font-bold text-slate-800">{title}</h2>
+            <p className="text-slate-500 text-sm">{subtitle}</p>
+        </div>
+    </div>
+);
+
+const CommandBlock = ({ label, cmd, desc, color }: any) => (
+    <div className="space-y-3">
+        <h3 className={`font-bold text-lg flex items-center gap-2 ${color}`}>
+            {label}
+        </h3>
+        <p className="text-xs text-slate-500">{desc}</p>
+        <div className="bg-black/40 p-4 rounded-lg border border-slate-700/50 flex justify-between items-center group hover:border-slate-500 transition-colors">
+            <code className="text-slate-300 font-mono text-xs break-all">{cmd}</code>
+            <CopyButton text={cmd} />
+        </div>
+    </div>
+);
 
 const SoftwareCard = ({ title, desc, url, icon, platform }: any) => (
-    <a href={url} target="_blank" rel="noreferrer" className="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-purple-200 transition-all">
-        <div className="flex justify-between items-start mb-3">
-            <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-purple-50 transition-colors">
+    <a href={url} target="_blank" rel="noreferrer" className="group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-purple-200 transition-all duration-300 transform hover:-translate-y-1">
+        <div className="flex justify-between items-start mb-4">
+            <div className="p-2.5 bg-slate-50 rounded-xl group-hover:bg-purple-50 transition-colors ring-1 ring-slate-100 group-hover:ring-purple-100">
                 {icon}
             </div>
             {platform && (
@@ -189,25 +232,51 @@ const SoftwareCard = ({ title, desc, url, icon, platform }: any) => (
                 </span>
             )}
         </div>
-        <h3 className="font-bold text-slate-800 mb-1 flex items-center gap-2">
+        <h3 className="font-bold text-lg text-slate-800 mb-2 flex items-center gap-2">
             {title}
             <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-50 transition-opacity" />
         </h3>
-        <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+        <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
     </a>
 );
 
 const ResourceLink = ({ title, desc, url, tag }: any) => (
-    <a href={url} target="_blank" rel="noreferrer" className="block bg-white p-4 rounded-xl border border-slate-200 hover:border-pink-300 hover:shadow-md transition-all group">
-        <div className="flex justify-between items-center mb-2">
+    <a href={url} target="_blank" rel="noreferrer" className="flex flex-col h-full bg-white p-5 rounded-xl border border-slate-200 hover:border-pink-300 hover:shadow-lg transition-all group">
+        <div className="flex justify-between items-center mb-3">
             <span className="text-[10px] font-bold uppercase tracking-wider text-pink-600 bg-pink-50 px-2 py-1 rounded-full border border-pink-100">
                 {tag}
             </span>
             <ExternalLink className="w-4 h-4 text-slate-300 group-hover:text-pink-400 transition-colors" />
         </div>
-        <h3 className="font-bold text-slate-800 mb-1">{title}</h3>
-        <p className="text-xs text-slate-500">{desc}</p>
+        <h3 className="font-bold text-slate-800 mb-2">{title}</h3>
+        <p className="text-xs text-slate-500 flex-grow">{desc}</p>
     </a>
+);
+
+const ArtistCategory = ({ title, artists, icon }: { title: string, artists: Artist[], icon: any }) => {
+    if (!artists || artists.length === 0) return null;
+    return (
+        <div className="space-y-4">
+            <div className="flex items-center gap-2 text-slate-400 uppercase tracking-widest text-xs font-bold border-b border-slate-100 pb-2">
+                {icon} {title}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {artists.map(artist => (
+                    <a key={artist.id} href={artist.url} target="_blank" rel="noreferrer" className="block group p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                        <h4 className="font-bold text-slate-800 group-hover:text-purple-600 transition-colors flex items-center gap-2">
+                            {artist.name}
+                            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400" />
+                        </h4>
+                        <p className="text-sm text-slate-500 mt-1 leading-relaxed">{artist.bio}</p>
+                    </a>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const UserIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
 );
 
 const CopyButton = ({ text }: { text: string }) => {
@@ -222,10 +291,10 @@ const CopyButton = ({ text }: { text: string }) => {
     return (
         <button 
             onClick={handleCopy} 
-            className="text-xs text-slate-500 hover:text-white transition-colors p-2"
+            className="text-xs font-bold text-slate-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-white/10"
             title="Copy to clipboard"
         >
-            {copied ? '✓' : 'Copy'}
+            {copied ? 'COPIED' : 'COPY'}
         </button>
     );
 };

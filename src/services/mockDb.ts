@@ -1,4 +1,4 @@
-import { Resource, Tutorial } from '../types';
+import { Resource, Tutorial, Artist } from '../types';
 import { resolvePath } from '../utils/pathUtils';
 
 const RESOURCES_KEY = 'eduhub_resources';
@@ -7,11 +7,14 @@ const RESOURCES_VERSION_KEY = 'eduhub_resources_version';
 const TUTORIALS_KEY = 'eduhub_tutorials';
 const TUTORIALS_VERSION_KEY = 'eduhub_tutorials_version';
 
+const ARTISTS_KEY = 'eduhub_artists';
+
 // Default structure for initialization (before fetch)
 const DEFAULT_DB = {
   version: 0,
   resources: [],
-  tutorials: []
+  tutorials: [],
+  artists: []
 };
 
 const parseJSON = <T>(value: string | null, fallback: T): T => {
@@ -33,30 +36,13 @@ export const initializeDatabase = async (): Promise<void> => {
     const remoteDb = await response.json();
     const remoteVersion = remoteDb.version;
 
-    const localResVersion = parseInt(localStorage.getItem(RESOURCES_VERSION_KEY) || '0');
-    const localTutVersion = parseInt(localStorage.getItem(TUTORIALS_VERSION_KEY) || '0');
-
-    // Simple Strategy: If remote version is strictly greater than local stored version, overwrite local.
-    // We track versions separately for simplicity in the past, but now we can unify or just check the master version.
-    // Let's assume the remote `version` covers both.
-    
-    // NOTE: To allow local edits to persist, we only overwrite if the REMOTE is newer than what we last saw.
-    // But without a complex sync, "Admin" edits are local only until exported.
-    // If we want "Admin" edits to not be wiped by a refresh if they are newer than remote...
-    // We need to compare timestamps or assume Admin edits bump a local version?
-    // For now, let's stick to: Remote > Local Version => Overwrite.
-    // Since local edits don't bump the version number in the file (unless we do it), 
-    // we should be careful.
-    // Actually, let's just check if we have EVER initialized.
-    // Or better: Always load remote if it's different?
-    // Let's use the `version` field in database.json as the source of truth for "Official Updates".
-    
     const currentStoredVersion = parseInt(localStorage.getItem('eduhub_db_version') || '0');
 
     if (remoteVersion > currentStoredVersion) {
       console.log(`Updating database from v${currentStoredVersion} to v${remoteVersion}`);
       localStorage.setItem(RESOURCES_KEY, JSON.stringify(remoteDb.resources));
       localStorage.setItem(TUTORIALS_KEY, JSON.stringify(remoteDb.tutorials));
+      localStorage.setItem(ARTISTS_KEY, JSON.stringify(remoteDb.artists || []));
       localStorage.setItem('eduhub_db_version', remoteVersion.toString());
       
       // Keep legacy keys for compatibility if needed, or update them
@@ -65,8 +51,6 @@ export const initializeDatabase = async (): Promise<void> => {
     }
   } catch (error) {
     console.error('Database initialization failed:', error);
-    // Fallback: If no remote DB (e.g. offline), use what we have in localStorage.
-    // If localStorage is empty, we start with empty arrays (or what was there).
   }
 };
 
@@ -128,10 +112,22 @@ export const toggleFeaturedTutorial = (id: string): void => {
   localStorage.setItem(TUTORIALS_KEY, JSON.stringify(updated));
 };
 
+export const getArtists = (): Artist[] => {
+  const stored = localStorage.getItem(ARTISTS_KEY);
+  return parseJSON<Artist[]>(stored, []);
+};
+
+export const addArtist = (artist: Artist): void => {
+  const current = getArtists();
+  const updated = [artist, ...current];
+  localStorage.setItem(ARTISTS_KEY, JSON.stringify(updated));
+};
+
 // Admin Export Feature
 export const exportDatabase = (): string => {
   const resources = getResources();
   const tutorials = getTutorials();
+  const artists = getArtists();
   // Bump version by 1 for the export
   const currentVersion = parseInt(localStorage.getItem('eduhub_db_version') || '0');
   const newVersion = currentVersion + 1;
@@ -139,7 +135,8 @@ export const exportDatabase = (): string => {
   const exportData = {
     version: newVersion,
     resources,
-    tutorials
+    tutorials,
+    artists
   };
 
   // Update local version so subsequent exports increment correctly
