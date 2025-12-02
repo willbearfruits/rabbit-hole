@@ -33,7 +33,7 @@ export interface Artist {
   name: string;
   bio: string;
   url: string;
-  category: 'Glitch' | 'Noise' | 'Performance' | 'Media Art' | 'DIY' | 'Film';
+  category: 'Glitch' | 'Noise' | 'Performance' | 'Media Art' | 'DIY' | 'Film' | 'Conceptual' | 'Local';
 }
 
 export interface UserSettings {

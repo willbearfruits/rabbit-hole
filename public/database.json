@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "resources": [
     {
       "id": "10",
@@ -183,7 +183,7 @@
     {
       "id": "a4",
       "name": "Karl Klomp",
-      "bio": "Hardware hacker creating analog video glitch devices and “dirty mixers”.",
+      "bio": "Hardware hacker creating analog video glitch devices and ‘dirty mixers’.",
       "url": "https://karlklomp.nl",
       "category": "Glitch"
     },
@@ -206,6 +206,62 @@
       "name": "Ryoji Ikeda",
       "bio": "Japanese minimal sound/data artist working with ultrasonics, math, and high-contrast visuals.",
       "url": "https://www.ryojiikeda.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a36",
+      "name": "JODI (jodi.org)",
+      "bio": "Duo of early net artists breaking interfaces, games, and websites as material.",
+      "url": "https://wwwwwwwww.jodi.org",
+      "category": "Glitch"
+    },
+    {
+      "id": "a37",
+      "name": "Vuk Ćosić",
+      "bio": "Early net artist working with ASCII, early web, and media archaeology.",
+      "url": "http://www.ljudmila.org/~vuk/",
+      "category": "Glitch"
+    },
+    {
+      "id": "a38",
+      "name": "Olia Lialina",
+      "bio": "Net art pioneer making early-web style narrative pages and theory.",
+      "url": "http://www.teleportacia.org",
+      "category": "Glitch"
+    },
+    {
+      "id": "a39",
+      "name": "Cory Arcangel",
+      "bio": "Artist hacking games, obsolete tech, and pop culture (Super Mario clouds, etc.).",
+      "url": "https://coryarcangel.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a40",
+      "name": "Kim Asendorf",
+      "bio": "Artist working with pixel sorting, generative GIFs, and data aesthetics.",
+      "url": "https://kimasendorf.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a41",
+      "name": "Rafael Rozendaal",
+      "bio": "Artist making websites as artworks, simple interactive abstractions.",
+      "url": "https://www.newrafael.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a42",
+      "name": "Casey Reas",
+      "bio": "Co-creator of Processing, generative and software-based visual artist.",
+      "url": "https://reas.com",
+      "category": "Glitch"
+    },
+    {
+      "id": "a43",
+      "name": "Zach Lieberman",
+      "bio": "Artist focusing on expressive computational drawing and openFrameworks.",
+      "url": "https://zachlieberman.com",
       "category": "Glitch"
     },
     {
@@ -258,6 +314,97 @@
       "category": "Noise"
     },
     {
+      "id": "a44",
+      "name": "Nurse With Wound",
+      "bio": "Long-running experimental/industrial collage project by Steven Stapleton.",
+      "url": "https://nursewithwound1.bandcamp.com",
+      "category": "Noise"
+    },
+    {
+      "id": "a45",
+      "name": "Wolf Eyes",
+      "bio": "American noise group mixing tape collage, junk metal, and electronics.",
+      "url": "https://wolfeyes.net",
+      "category": "Noise"
+    },
+    {
+      "id": "a46",
+      "name": "Fennesz",
+      "bio": "Austrian guitarist using granular digital processing to blur noise and melody.",
+      "url": "https://fennesz.org",
+      "category": "Noise"
+    },
+    {
+      "id": "a47",
+      "name": "Tim Hecker",
+      "bio": "Canadian musician working with dense, distorted ambient and noise.",
+      "url": "https://www.sunblind.net",
+      "category": "Noise"
+    },
+    {
+      "id": "a48",
+      "name": "Ben Frost",
+      "bio": "Composer using heavy dynamics, distortion, and post-minimalist repetition.",
+      "url": "https://www.benfrost.is",
+      "category": "Noise"
+    },
+    {
+      "id": "a49",
+      "name": "Ikue Mori",
+      "bio": "Improviser and composer using drum machines and laptop electronics.",
+      "url": "https://www.tzadik.com/index.php?artist=Ikue+Mori",
+      "category": "Noise"
+    },
+    {
+      "id": "a50",
+      "name": "Oval (Markus Popp)",
+      "bio": "Early ‘glitch music’ project using CD skipping and digital artifacts as structure.",
+      "url": "https://oval.vision",
+      "category": "Noise"
+    },
+    {
+      "id": "a51",
+      "name": "Oneohtrix Point Never (Daniel Lopatin)",
+      "bio": "Experimental electronic musician using samples, synths, and meta-pop structures.",
+      "url": "https://pointnever.com",
+      "category": "Noise"
+    },
+    {
+      "id": "a52",
+      "name": "The Caretaker (Leyland Kirby)",
+      "bio": "Project exploring memory, decay, and hauntology through treated ballroom music.",
+      "url": "https://thecaretaker.bandcamp.com",
+      "category": "Noise"
+    },
+    {
+      "id": "a53",
+      "name": "Janet Cardiff",
+      "bio": "Sound artist known for audio walks and layered narrative headphone pieces.",
+      "url": "https://cardiffmiller.com/artworks/walks",
+      "category": "Noise"
+    },
+    {
+      "id": "a54",
+      "name": "Christina Kubisch",
+      "bio": "Sound artist revealing hidden electromagnetic fields via custom headphones.",
+      "url": "https://www.christinakubisch.de",
+      "category": "Noise"
+    },
+    {
+      "id": "a55",
+      "name": "Max Neuhaus",
+      "bio": "Early sound artist making permanent and site-specific sound installations.",
+      "url": "https://www.max-neuhaus.info",
+      "category": "Noise"
+    },
+    {
+      "id": "a56",
+      "name": "Susan Philipsz",
+      "bio": "Artist using voice and song in public spaces as sculptural sound.",
+      "url": "https://www.tanyabonakdargallery.com/artists/susan-philipsz",
+      "category": "Noise"
+    },
+    {
       "id": "a15",
       "name": "Marina Abramović",
       "bio": "Performance art icon exploring endurance, vulnerability, and ritual.",
@@ -290,6 +437,48 @@
       "name": "Tehching Hsieh",
       "bio": "Performance artist known for year-long endurance works testing time, labor, and life.",
       "url": "https://www.tehchinghsieh.com",
+      "category": "Performance"
+    },
+    {
+      "id": "a57",
+      "name": "Carolee Schneemann",
+      "bio": "Performance and film artist focusing on body, sexuality, and feminist critique.",
+      "url": "https://caroleeschneemannfoundation.org",
+      "category": "Performance"
+    },
+    {
+      "id": "a58",
+      "name": "Ana Mendieta",
+      "bio": "Cuban-American artist using her body in landscape, ritual, and earth works.",
+      "url": "https://www.tate.org.uk/art/artists/ana-mendieta-1695",
+      "category": "Performance"
+    },
+    {
+      "id": "a59",
+      "name": "Orlan",
+      "bio": "French artist using plastic surgery and medical procedures as performance.",
+      "url": "https://www.orlan.eu",
+      "category": "Performance"
+    },
+    {
+      "id": "a60",
+      "name": "Ron Athey",
+      "bio": "Performance artist working with blood, ritual, and queer body politics.",
+      "url": "https://ronathey.com",
+      "category": "Performance"
+    },
+    {
+      "id": "a61",
+      "name": "Franko B",
+      "bio": "Performance artist using bleeding, endurance, and vulnerability as language.",
+      "url": "https://www.franko-b.com",
+      "category": "Performance"
+    },
+    {
+      "id": "a62",
+      "name": "Guillermo Gómez-Peña",
+      "bio": "Performance/poetry artist exploring border politics, identity, and hybridity.",
+      "url": "https://www.pochanostra.com",
       "category": "Performance"
     },
     {
@@ -335,6 +524,97 @@
       "category": "Media Art"
     },
     {
+      "id": "a63",
+      "name": "Rafael Lozano-Hemmer",
+      "bio": "Artist creating large-scale interactive installations using light, sensors, and public space.",
+      "url": "https://www.lozano-hemmer.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a64",
+      "name": "Random International",
+      "bio": "Studio known for interactive installations like Rain Room.",
+      "url": "https://random-international.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a65",
+      "name": "teamLab",
+      "bio": "Japanese collective making immersive digital projection environments.",
+      "url": "https://www.teamlab.art",
+      "category": "Media Art"
+    },
+    {
+      "id": "a66",
+      "name": "Monika Fleischmann & Wolfgang Strauss",
+      "bio": "Early media art duo working on interactive virtual realities and interfaces.",
+      "url": "https://monikafleischmann.de/en/",
+      "category": "Media Art"
+    },
+    {
+      "id": "a67",
+      "name": "David Rokeby",
+      "bio": "Media artist working with interactive sound/video and surveillance systems.",
+      "url": "http://www.davidrokeby.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a68",
+      "name": "Heather Dewey-Hagborg",
+      "bio": "Artist working with DNA, biometrics, and speculative forensic portraits.",
+      "url": "https://deweyhagborg.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a69",
+      "name": "Ryoichi Kurokawa",
+      "bio": "Audiovisual artist combining precise digital visuals with abstract sound.",
+      "url": "https://ryoichikurokawa.com",
+      "category": "Media Art"
+    },
+    {
+      "id": "a70",
+      "name": "Hans Haacke",
+      "bio": "Conceptual artist exposing political and economic structures in art institutions.",
+      "url": "https://www.paula-cooper.com/artists/hans-haacke",
+      "category": "Conceptual"
+    },
+    {
+      "id": "a71",
+      "name": "Barbara Kruger",
+      "bio": "Artist using bold text-image compositions to critique power and ideology.",
+      "url": "https://www.barbarakruger.com",
+      "category": "Conceptual"
+    },
+    {
+      "id": "a72",
+      "name": "Jenny Holzer",
+      "bio": "Artist known for text-based public works (LEDs, projections, benches).",
+      "url": "https://projects.jennyholzer.com",
+      "category": "Conceptual"
+    },
+    {
+      "id": "a73",
+      "name": "Yinka Shonibare CBE",
+      "bio": "Artist using Dutch wax fabrics to talk about colonialism and identity.",
+      "url": "https://www.yinkashonibare.com",
+      "category": "Conceptual"
+    },
+    {
+      "id": "a74",
+      "name": "Santiago Sierra",
+      "bio": "Conceptual artist staging exploitative or uncomfortable situations to reveal power.",
+      "url": "https://www.lissongallery.com/artists/santiago-sierra",
+      "category": "Conceptual"
+    },
+    {
+      "id": "a75",
+      "name": "Guerrilla Girls",
+      "bio": "Anonymous feminist collective using posters and interventions to critique art world sexism and racism.",
+      "url": "https://www.guerrillagirls.com",
+      "category": "Conceptual"
+    },
+    {
       "id": "a26",
       "name": "Reed Ghazala",
       "bio": "Father of circuit bending; turning cheap electronics into expressive instruments.",
@@ -377,6 +657,62 @@
       "category": "DIY"
     },
     {
+      "id": "a76",
+      "name": "Yuri Suzuki",
+      "bio": "Sound artist/designer creating playful audio devices and installations.",
+      "url": "https://yurisuzuki.com",
+      "category": "DIY"
+    },
+    {
+      "id": "a77",
+      "name": "Sam Battle (Look Mum No Computer)",
+      "bio": "YouTube maker building insane modular synths, Furby organs, and DIY machines.",
+      "url": "https://www.lookmumnocomputer.com",
+      "category": "DIY"
+    },
+    {
+      "id": "a78",
+      "name": "Tom Bugs (BugBrand)",
+      "bio": "Builder of compact modular and standalone analog synths and processors.",
+      "url": "https://bugbrand.co.uk",
+      "category": "DIY"
+    },
+    {
+      "id": "a79",
+      "name": "Bastl Instruments",
+      "bio": "Czech collective/company making small modular/desktop synths with DIY spirit.",
+      "url": "https://bastl-instruments.com",
+      "category": "DIY"
+    },
+    {
+      "id": "a80",
+      "name": "Nonlinearcircuits (Andrew Fitch)",
+      "bio": "Designer of chaotic, experimental Eurorack modules and PCBs for DIY.",
+      "url": "https://www.nonlinearcircuits.com",
+      "category": "DIY"
+    },
+    {
+      "id": "a81",
+      "name": "Death By Audio (Oliver Ackermann)",
+      "bio": "Noise rock musician and pedal designer (insanely loud/experimental stompboxes).",
+      "url": "https://www.deathbyaudiopedals.com",
+      "category": "DIY"
+    },
+    {
+      "id": "a82",
+      "name": "Teenage Engineering",
+      "bio": "Swedish company making quirky, design-focused instruments and pocket operators.",
+      "url": "https://teenage.engineering",
+      "category": "DIY"
+    },
+    {
+      "id": "a83",
+      "name": "Peter Zinovieff",
+      "bio": "Composer and engineer behind EMS synths (VCS3, Synthi), early computer music.",
+      "url": "http://peterzinovieff.org.uk",
+      "category": "DIY"
+    },
+    {
       "id": "a32",
       "name": "Leos Carax",
       "bio": "French filmmaker blending surrealism, music, and dream logic (Holy Motors).",
@@ -403,6 +739,69 @@
       "bio": "American filmmaker exploring glitchy Americana, chaos, and subculture.",
       "url": "https://www.imdb.com/name/nm0460788/",
       "category": "Film"
+    },
+    {
+      "id": "a84",
+      "name": "Apichatpong Weerasethakul",
+      "bio": "Thai filmmaker using slow cinema, dreams, and layered realities.",
+      "url": "https://www.imdb.com/name/nm0914612/",
+      "category": "Film"
+    },
+    {
+      "id": "a85",
+      "name": "Gaspar Noé",
+      "bio": "Director exploring extreme sensation, chaos, and experimental structure.",
+      "url": "https://www.imdb.com/name/nm0635854/",
+      "category": "Film"
+    },
+    {
+      "id": "a86",
+      "name": "Terry Gilliam",
+      "bio": "Director with dense, handmade dystopian worlds (Brazil, etc.).",
+      "url": "https://www.imdb.com/name/nm0000416/",
+      "category": "Film"
+    },
+    {
+      "id": "a87",
+      "name": "Michal Rovner",
+      "bio": "Artist working with video loops of human figures and abstraction.",
+      "url": "https://www.michalrovner.com",
+      "category": "Local"
+    },
+    {
+      "id": "a88",
+      "name": "Sigalit Landau",
+      "bio": "Installation/video artist often using the Dead Sea, salt, and the body.",
+      "url": "https://www.sigalitlandau.com",
+      "category": "Local"
+    },
+    {
+      "id": "a89",
+      "name": "Guy Ben-Ner",
+      "bio": "Video artist using low-budget domestic setups and humor.",
+      "url": "https://www.galerieloevenbruck.com/en/artistes/guy-ben-ner",
+      "category": "Local"
+    },
+    {
+      "id": "a90",
+      "name": "Ohad Fishof",
+      "bio": "Artist working with sound, performance, and hybrid media.",
+      "url": "https://ohadfishof.com",
+      "category": "Local"
+    },
+    {
+      "id": "a91",
+      "name": "Adi Gelbart",
+      "bio": "Musician/artist combining analog electronics, animation, and absurd narratives.",
+      "url": "https://adigelbart.com",
+      "category": "Local"
+    },
+    {
+      "id": "a92",
+      "name": "Daniel Landau",
+      "bio": "Artist working with VR, performance, and embodied media.",
+      "url": "https://daniel-landau.com",
+      "category": "Local"
     }
   ]
 }

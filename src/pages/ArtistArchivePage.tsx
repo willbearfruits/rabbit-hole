@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Monitor, Zap, User, Layers, Wrench, Film, ExternalLink, Search } from 'lucide-react';
+import { Monitor, Zap, User, Layers, Wrench, Film, ExternalLink, Search, Brain, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getArtists } from '../services/mockDb';
 import { Artist } from '../types';
@@ -29,7 +29,7 @@ export const ArtistArchivePage = () => {
     };
   }, []);
 
-  const categories = ['Glitch', 'Noise', 'Performance', 'Media Art', 'DIY', 'Film'];
+  const categories = ['Glitch', 'Noise', 'Performance', 'Media Art', 'DIY', 'Film', 'Conceptual', 'Local'];
 
   const filtered = artists.filter(a => {
     const matchesSearch = a.name.toLowerCase().includes(filter.toLowerCase()) || a.bio.toLowerCase().includes(filter.toLowerCase());
@@ -111,6 +111,8 @@ const ArtistCard = ({ artist }: { artist: Artist }) => {
             case 'Media Art': return <Layers className="w-4 h-4" />;
             case 'DIY': return <Wrench className="w-4 h-4" />;
             case 'Film': return <Film className="w-4 h-4" />;
+            case 'Conceptual': return <Brain className="w-4 h-4" />;
+            case 'Local': return <MapPin className="w-4 h-4" />;
             default: return <User className="w-4 h-4" />;
         }
     };
