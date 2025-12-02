@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Zap, Code, Mic, Palette, ArrowRight } from 'lucide-react';
+import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Zap, Code, Mic, Palette, ArrowRight, Wand2 } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Link } from 'react-router-dom';
+import { GlitchBooth } from '../components/GlitchBooth';
+import { Oracle } from '../components/Oracle';
 
 export const MusraraPage = () => {
   return (
@@ -17,6 +19,19 @@ export const MusraraPage = () => {
           <br/><span className="text-slate-400 text-lg">Bend data. Generate chaos. Build the future.</span>
         </p>
       </div>
+
+      {/* Section 0: Creative Destruction (New) */}
+      <section className="space-y-8">
+        <SectionHeader icon={<Wand2 className="w-6 h-6" />} title="Creative Destruction" subtitle="Browser-based tools for immediate chaos." color="text-pink-500 bg-pink-50" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+                <GlitchBooth />
+            </div>
+            <div className="h-full">
+                <Oracle />
+            </div>
+        </div>
+      </section>
 
       {/* Section 1: Essential Software */}
       <section className="space-y-8">
