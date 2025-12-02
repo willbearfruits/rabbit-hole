@@ -24,14 +24,17 @@ export const DoomPage = () => {
             {/* Game Embed */}
             <iframe 
                 key={key}
-                src="https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Fcustom%2Fdos%2Fdoom.jsdos?anonymous=1"
+                src="https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Foriginal%2F2X%2F2%2F24b00b14f118580763d40f3a7a1c9766e3f07a3.jsdos"
                 className="w-full h-full border-none"
                 title="Doom (1993)"
                 allow="autoplay; gamepad; keyboard-lock; fullscreen"
             />
             
-            <div className="absolute bottom-4 right-4 text-xs text-white/20 font-mono pointer-events-none">
-                IDKFA // IDDQD // DOS.ZONE
+            <div className="absolute bottom-4 right-4 flex flex-col items-end pointer-events-none">
+                <span className="text-xs text-white/20 font-mono">IDKFA // IDDQD // DOS.ZONE</span>
+                <a href="https://dos.zone/play/doom-1993" target="_blank" rel="noreferrer" className="text-[10px] text-white/10 hover:text-white/50 pointer-events-auto transition-colors">
+                    If game fails to load, click here
+                </a>
             </div>
         </div>
     );
