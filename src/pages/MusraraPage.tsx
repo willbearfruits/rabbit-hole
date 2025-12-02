@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
-import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Zap, Code, Mic, Monitor, Layers, Palette, Film, Music, Plus, Mail } from 'lucide-react';
+import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Zap, Code, Mic, Palette, ArrowRight } from 'lucide-react';
 import { Button } from '../components/Button';
-import { getArtists } from '../services/mockDb';
-import { Artist } from '../types';
+import { Link } from 'react-router-dom';
 
 export const MusraraPage = () => {
-  const artists = getArtists();
-  
-  // Group artists by category
-  const categories = {
-    'Glitch': artists.filter(a => a.category === 'Glitch'),
-    'Noise': artists.filter(a => a.category === 'Noise'),
-    'Performance': artists.filter(a => a.category === 'Performance'),
-    'Media Art': artists.filter(a => a.category === 'Media Art'),
-    'DIY': artists.filter(a => a.category === 'DIY'),
-    'Film': artists.filter(a => a.category === 'Film'),
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 space-y-16 animate-fade-in">
       
@@ -159,33 +146,29 @@ export const MusraraPage = () => {
         </div>
       </section>
 
-      {/* Section 4: Artist Library */}
+      {/* Section 4: Artist Library Link */}
       <section className="space-y-8">
-        <div className="flex justify-between items-end border-b border-slate-200 pb-4">
-             <SectionHeader icon={<Palette className="w-6 h-6" />} title="The Reference Archive" subtitle="Pioneers of Glitch, Noise, and New Media." color="text-purple-600 bg-purple-50" noBorder />
-             
-             <a href="mailto:glitches@therabbithole.edu?subject=Artist%20Suggestion&body=Artist%20Name:%0AURL:%0ACategory:%0ABio:" className="hidden md:block">
-                <Button variant="secondary" size="sm">
-                    <Plus className="w-4 h-4 mr-2" /> Suggest Artist
-                </Button>
-             </a>
-        </div>
-
-        <div className="space-y-12">
-            <ArtistCategory title="Glitch / Code / Signal" artists={categories['Glitch']} icon={<Monitor className="w-5 h-5" />} />
-            <ArtistCategory title="Noise / Sound Art" artists={categories['Noise']} icon={<Zap className="w-5 h-5" />} />
-            <ArtistCategory title="Performance / Body" artists={categories['Performance']} icon={<UserIcon />} />
-            <ArtistCategory title="Media Art / Interactive" artists={categories['Media Art']} icon={<Layers className="w-5 h-5" />} />
-            <ArtistCategory title="DIY / Circuit Bending" artists={categories['DIY']} icon={<Wrench className="w-5 h-5" />} />
-            <ArtistCategory title="Film / Surrealism" artists={categories['Film']} icon={<Film className="w-5 h-5" />} />
-        </div>
+        <SectionHeader icon={<Palette className="w-6 h-6" />} title="The Reference Archive" subtitle="Pioneers of Glitch, Noise, and New Media." color="text-purple-600 bg-purple-50" />
         
-        <div className="md:hidden text-center pt-8">
-            <a href="mailto:glitches@therabbithole.edu?subject=Artist%20Suggestion&body=Artist%20Name:%0AURL:%0ACategory:%0ABio:">
-                <Button variant="secondary" className="w-full">
-                    <Mail className="w-4 h-4 mr-2" /> Suggest New Artist
-                </Button>
-            </a>
+        <div className="bg-gradient-to-r from-purple-900 to-indigo-900 rounded-2xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl group hover:shadow-purple-500/20 transition-shadow">
+            <div className="relative z-10 max-w-2xl">
+                <h3 className="text-3xl font-black mb-4">Enter the Archive</h3>
+                <p className="text-purple-100 mb-8 text-lg leading-relaxed">
+                    A living index of 35+ artists defining the edge of media art. 
+                    Explore the works of Rosa Menkman, Ryoji Ikeda, Nam June Paik, and more.
+                </p>
+                <Link to="/musrara/archive">
+                    <Button size="lg" className="bg-white text-purple-900 hover:bg-purple-50 border-none">
+                        Browse the Collection <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                </Link>
+            </div>
+            
+            {/* Decorative Background */}
+            <div className="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-l from-purple-500/20 to-transparent" />
+            <div className="absolute -right-10 -bottom-10 opacity-10 transform rotate-12 group-hover:scale-110 transition-transform duration-700">
+                <Palette className="w-64 h-64" />
+            </div>
         </div>
       </section>
 
@@ -251,32 +234,6 @@ const ResourceLink = ({ title, desc, url, tag }: any) => (
         <h3 className="font-bold text-slate-800 mb-2">{title}</h3>
         <p className="text-xs text-slate-500 flex-grow">{desc}</p>
     </a>
-);
-
-const ArtistCategory = ({ title, artists, icon }: { title: string, artists: Artist[], icon: any }) => {
-    if (!artists || artists.length === 0) return null;
-    return (
-        <div className="space-y-4">
-            <div className="flex items-center gap-2 text-slate-400 uppercase tracking-widest text-xs font-bold border-b border-slate-100 pb-2">
-                {icon} {title}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {artists.map(artist => (
-                    <a key={artist.id} href={artist.url} target="_blank" rel="noreferrer" className="block group p-4 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
-                        <h4 className="font-bold text-slate-800 group-hover:text-purple-600 transition-colors flex items-center gap-2">
-                            {artist.name}
-                            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400" />
-                        </h4>
-                        <p className="text-sm text-slate-500 mt-1 leading-relaxed">{artist.bio}</p>
-                    </a>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-const UserIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
 );
 
 const CopyButton = ({ text }: { text: string }) => {

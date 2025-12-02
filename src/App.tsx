@@ -10,6 +10,7 @@ import { SettingsPage } from './pages/SettingsPage';
 import { AuthPage } from './pages/AuthPage';
 import { DoomPage } from './pages/DoomPage';
 import { MusraraPage } from './pages/MusraraPage';
+import { ArtistArchivePage } from './pages/ArtistArchivePage';
 import { initializeDatabase } from './services/mockDb';
 
 const AppContent = () => {
@@ -29,6 +30,7 @@ const AppContent = () => {
           <Route path="/tutorials" element={<TutorialsPage />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/musrara" element={<MusraraPage />} />
+          <Route path="/musrara/archive" element={<ArtistArchivePage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/doom" element={<DoomPage />} />
           <Route path="*" element={<Navigate to="/" />} />
