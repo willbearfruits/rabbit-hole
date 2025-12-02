@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The Rabbit Hole</title>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // https://github.com/rafgraph/spa-github-pages
+      // This script checks to see if a redirect is already in place
+      // If so, it takes the redirect parameters and replaces the
+      // current URL's path and query string.
+      // Otherwise, it initiates a redirect to the index.html
+      // with the current URL's path and query string appended.
+      // This is for use with BrowserRouter and not HashRouter.
+      // For HashRouter, you don't need this 404.html, just ensure
+      // your index.html is served for all paths (which GitHub Pages does)
+      // but you'd have # in your URL.
+
+      (function(){
+        var redirect = sessionStorage.getItem('redirect');
+        if (redirect) {
+          sessionStorage.removeItem('redirect');
+          window.location.replace(redirect);
+        } else {
+          var path = window.location.pathname;
+          var base = '/swissknifeofmedia'; // This needs to match your vite.config.ts base
+          if (path.startsWith(base)) {
+              path = path.substring(base.length); // Remove base path for router
+          }
+          // Preserve query string and hash
+          var queryString = window.location.search;
+          var hash = window.location.hash;
+          sessionStorage.setItem('redirect', base + '/' + path + queryString + hash);
+          window.location.replace(base + '/index.html');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- If you're not using a script to redirect, you can add a simple message here -->
+    <p>Redirecting to the app...</p>
+  </body>
+</html>
