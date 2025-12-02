@@ -1,10 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Star } from 'lucide-react';
-import { Button } from '../components/Button';
-import { Downloads } from '../components/Downloads';
-import { getResources } from '../services/mockDb';
-import { ResourceType } from '../types';
+import { AsciiSunset } from '../components/AsciiSunset';
 
 export const HomePage = () => {
   const resources = getResources();
@@ -20,9 +15,11 @@ export const HomePage = () => {
             <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
             v2.1 Media Arts Edition
         </div>
-        <h1 className="text-5xl md:text-7xl font-extrabold text-primary tracking-tight">
-          Create. <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-500">Synthesize.</span> Perform.
-        </h1>
+        
+        <div className="py-8">
+            <AsciiSunset />
+        </div>
+
         <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
           The ultimate toolkit for <strong>New Media Artists</strong> & <strong>Synth Builders</strong>. 
           Manage course materials, calculate filter components, and flash your DIY instruments.
