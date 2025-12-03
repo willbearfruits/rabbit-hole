@@ -52,7 +52,7 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <BrowserRouter basename="/swissknifeofmedia/">
+      <BrowserRouter basename="/the-rabbit-hole/">
         <AppContent />
       </BrowserRouter>
     </AuthProvider>
