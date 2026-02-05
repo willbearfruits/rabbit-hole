@@ -164,6 +164,32 @@ export const AuthPage = () => {
           </Button>
         </form>
 
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-300"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-slate-500">or</span>
+          </div>
+        </div>
+
+        <Button 
+          variant="secondary"
+          className="w-full py-2 bg-slate-100 text-slate-600 hover:bg-slate-200 border-none shadow-none"
+          onClick={() => {
+            const guestUser: User = {
+              id: 'guest-' + Date.now(),
+              name: 'Guest',
+              email: 'guest@lab.local',
+              role: 'STUDENT',
+              settings: { aiEnabled: false }
+            };
+            login(guestUser);
+          }}
+        >
+          Continue as Guest
+        </Button>
+
         {authMode === 'firebase' && (
           <div className="mt-6 text-center text-sm text-slate-600">
             {isLogin ? "New to the workshop? " : "Already have access? "}

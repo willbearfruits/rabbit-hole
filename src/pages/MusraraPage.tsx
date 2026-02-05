@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Zap, Code, Mic, Palette, ArrowRight, Wand2 } from 'lucide-react';
+import { Wrench, Terminal, Image, Video, Brain, ExternalLink, Zap, Code, Mic, Palette, ArrowRight, Wand2, Box, Camera } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Link } from 'react-router-dom';
 import { GlitchBooth } from '../components/GlitchBooth';
@@ -63,6 +63,18 @@ export const MusraraPage = () => {
                 desc="GNU Image Manipulation Program. Scriptable open-source alternative to Photoshop."
                 url="https://www.gimp.org/"
                 icon={<Image className="w-5 h-5 text-green-600" />}
+            />
+            <SoftwareCard 
+                title="Blender" 
+                desc="The free and open source 3D creation suite. Supports the entirety of the 3D pipeline."
+                url="https://www.blender.org/"
+                icon={<Box className="w-5 h-5 text-orange-500" />}
+            />
+            <SoftwareCard 
+                title="Meshroom" 
+                desc="Photogrammetry software. Create 3D models from photographic images."
+                url="https://alicevision.org/#meshroom"
+                icon={<Camera className="w-5 h-5 text-blue-400" />}
             />
         </div>
       </section>

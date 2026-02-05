@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
+import ScrollToTop from './components/ScrollToTop';
 import { HomePage } from './pages/HomePage';
 import { ResourcesPage } from './pages/ResourcesPage';
 import { TutorialsPage } from './pages/TutorialsPage';
@@ -53,6 +54,7 @@ const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter basename="/swissknifeofmedia/">
+        <ScrollToTop />
         <AppContent />
       </BrowserRouter>
     </AuthProvider>

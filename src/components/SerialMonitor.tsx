@@ -27,7 +27,9 @@ export const SerialMonitor: React.FC = () => {
 
   // Scroll to bottom on new log
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (logs.length > 0) {
+        terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [logs]);
 
   const handleSend = async (e?: React.FormEvent) => {

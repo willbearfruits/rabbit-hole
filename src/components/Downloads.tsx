@@ -18,6 +18,16 @@ const downloads = [
     title: 'Big Muff Stages (PNG)',
     description: 'Breakdown of the Big Muff Pi stages.',
     path: resolvePath('/media/schematics/big-muff-stages.png')
+  },
+  {
+    title: 'Blender',
+    description: 'Open-source 3D creation suite. Essential for 3D modeling and animation.',
+    path: 'https://www.blender.org/download/'
+  },
+  {
+    title: 'Meshroom',
+    description: 'Open-source 3D Reconstruction Software based on the AliceVision framework.',
+    path: 'https://alicevision.org/#meshroom'
   }
 ];
 
@@ -35,8 +45,15 @@ export const Downloads: React.FC = () => {
               <div className="font-semibold text-slate-800">{d.title}</div>
               <div className="text-sm text-slate-500">{d.description}</div>
             </div>
-            <a href={d.path} download>
-              <Button size="sm" variant="secondary">Download</Button>
+            <a 
+              href={d.path} 
+              download={!d.path.startsWith('http')} 
+              target={d.path.startsWith('http') ? "_blank" : undefined}
+              rel={d.path.startsWith('http') ? "noopener noreferrer" : undefined}
+            >
+              <Button size="sm" variant="secondary">
+                {d.path.startsWith('http') ? 'Visit' : 'Download'}
+              </Button>
             </a>
           </div>
         ))}
