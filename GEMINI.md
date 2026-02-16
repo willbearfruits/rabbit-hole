@@ -1,4 +1,4 @@
-# GEMINI.md - The Rabbit Hole (swissknifeofmedia)
+# GEMINI.md - The Rabbit Hole (rabbit-hole)
 
 ## Project Overview
 **The Rabbit Hole** is a specialized web-based toolkit and archive designed for New Media artists, electronic synth-builders, and creative coders. It serves as a digital "Anarchist Cookbook," providing essential utilities, curated educational resources, and an archive of experimental artists.
@@ -19,7 +19,7 @@ The project requires Node.js 20+.
 ### Key Commands
 - **Install Dependencies:** `npm install`
 - **Start Development Server:** `npm run dev` (Runs on Vite)
-- **Build for Production:** `npm run build` (Outputs to `dist/`, configured with base path `/swissknifeofmedia/`)
+- **Build for Production:** `npm run build` (Outputs to `dist/`, configured with base path `/rabbit-hole/`)
 - **Preview Production Build:** `npm run preview`
 
 ### Environment Configuration
@@ -47,7 +47,7 @@ Copy `.env.example` to `.env.local` and configure:
 - **Doom:** A localized JS-DOS implementation of Doom (1993) accessible at `/doom`.
 
 ## Development Conventions
-- **Routing:** Uses `BrowserRouter` with a `basename="/swissknifeofmedia/"`. New routes should be added in `src/App.tsx`.
+- **Routing:** Uses `BrowserRouter` with a `basename="/rabbit-hole/"`. New routes should be added in `src/App.tsx`.
 - **Authentication:** Most pages are protected by an `AuthPage` gate in `AppContent`.
 - **Styling:** Follows Tailwind CSS 4 conventions. Prefer utility classes over custom CSS.
 - **AI Integration:** The `gemini-2.5-flash` model is used for the AI tutor.
@@ -56,4 +56,4 @@ Copy `.env.example` to `.env.local` and configure:
 ## Deployment Details
 - **GitHub Pages:** Deployment is automated via `.github/workflows/deploy.yml`. 
 - **404 Handling:** A `public/404.html` is present to handle SPA routing on GitHub Pages.
-- **Base Path:** Always ensure `vite.config.ts` has `base: '/swissknifeofmedia/'` for correct asset loading on the production URL.
+- **Base Path:** Always ensure `vite.config.ts` has `base: '/rabbit-hole/'` for correct asset loading on the production URL.

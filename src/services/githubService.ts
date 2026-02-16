@@ -6,7 +6,7 @@ const GITHUB_API_BASE = 'https://api.github.com';
 // Ideally, we extract them from the current window URL or config, 
 // but for your specific repo we can default them:
 const OWNER = 'willbearfruits';
-const REPO = 'swissknifeofmedia';
+const REPO = 'rabbit-hole';
 const FILE_PATH = 'public/database.json';
 
 export const syncToGithub = async (token: string) => {

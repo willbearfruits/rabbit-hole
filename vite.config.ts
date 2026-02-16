@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  base: '/swissknifeofmedia/', // Crucial for GitHub Pages
+  base: '/rabbit-hole/', // Crucial for GitHub Pages
 });

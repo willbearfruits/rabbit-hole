@@ -40,7 +40,16 @@ const AppContent = () => {
       
       <footer className="bg-white/50 backdrop-blur-sm border-t border-slate-200 py-6 text-center text-xs text-slate-400 mt-auto">
         <p>© 2025 The Rabbit Hole. Built for the Creative Tech Community.</p>
-        {/* Force re-deploy */}
+        <p className="mt-2">
+          <a
+            href="https://www.patreon.com/Seriousshit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-red-700 hover:text-red-900 underline"
+          >
+            Support on Patreon
+          </a>
+        </p>
       </footer>
     </div>
   );
@@ -53,7 +62,7 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <BrowserRouter basename="/swissknifeofmedia/">
+      <BrowserRouter basename="/rabbit-hole/">
         <ScrollToTop />
         <AppContent />
       </BrowserRouter>

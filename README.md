@@ -63,8 +63,8 @@ To run this locally, you need **Node.js 20+**.
 
 1.  **Clone the archive:**
     ```bash
-    git clone https://github.com/willbearfruits/swissknifeofmedia.git
-    cd swissknifeofmedia
+    git clone https://github.com/willbearfruits/rabbit-hole.git
+    cd rabbit-hole
     ```
 
 2.  **Install dependencies:**

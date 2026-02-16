@@ -81,6 +81,14 @@ export const Navbar = () => {
                 {link.icon} {link.label}
               </Link>
             ))}
+            <a
+              href="https://www.patreon.com/Seriousshit"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 rounded-lg text-sm transition-all text-red-100 hover:text-white hover:bg-white/10"
+            >
+              Support
+            </a>
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
@@ -138,6 +146,14 @@ export const Navbar = () => {
                 {link.icon} {link.label}
               </Link>
             ))}
+            <a
+              href="https://www.patreon.com/Seriousshit"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block px-3 py-3 rounded-lg text-base font-medium text-red-100 hover:bg-white/10"
+            >
+              Support on Patreon
+            </a>
             <div className="border-t border-white/10 my-2 pt-2 space-y-1">
                 <Link to="/settings" className="block px-3 py-3 rounded-lg text-base font-medium text-red-100 hover:bg-white/10 flex items-center">
                     <Settings className="w-4 h-4 mr-2" /> Settings
