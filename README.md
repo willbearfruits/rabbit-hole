@@ -6,6 +6,12 @@
 
 This is the repository of **Glitches**. I built this to be the single source of truth for the knowledge I've gathered—shared freely to arm the next generation of noise-makers.
 
+## Support
+
+Most of my work stays free and open-source.
+Support early access, live sessions, and workshop-time:
+https://www.patreon.com/Seriousshit
+
 ## 🕳️ What's Inside?
 
 ### 1. The Workbench (Tools)
